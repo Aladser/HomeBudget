@@ -1,4 +1,4 @@
-package homebudget.table;
+package homebudget.models;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,7 +24,7 @@ public class OperationsTableModel implements TableModel{
 
     @Override
     public String getColumnName(int columnIndex) {
-        return columnIndex==0 ? "Название" : "Тип операции"; 
+        return columnIndex==0 ? "Название" : "Тип"; 
     }
 
     @Override

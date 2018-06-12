@@ -2,16 +2,22 @@ package homebudget.frames;
 
 import homebudget.views.TsctTableCellRender;
 import static homebudget.HomeBudget.getTransationsCtrl;
-import homebudget.table.TransactionsTableModel;
+import homebudget.models.TransactionsTableModel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 public class MainFrame extends javax.swing.JFrame {
 
     public MainFrame() {
         // рендеринг окна
         initComponents();
-        getContentPane().setBackground(java.awt.Color.white);
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        getContentPane().setBackground(Color.white);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - getWidth())/2, (screenSize.height - getHeight())/2);
+        tableScrollPane.setOpaque(true);
+        tableScrollPane.getViewport().setBackground(Color.white);
+        
         // таблица transactions
         TransactionsTableModel model = new TransactionsTableModel(getTransationsCtrl().getData());
         table.setModel(model);

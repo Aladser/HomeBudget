@@ -1,4 +1,4 @@
-package homebudget.table;
+package homebudget.models;
 
 public class OperationsTableLine {
     public String name;

@@ -1,4 +1,6 @@
-package homebudget.table;
+package homebudget.controllers;
+
+import homebudget.models.DBConnection;
 
 /** БД таблица */
 public abstract class DBTableCtrl {

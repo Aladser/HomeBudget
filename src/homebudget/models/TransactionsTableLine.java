@@ -1,4 +1,4 @@
-package homebudget.table;
+package homebudget.models;
 
 import java.util.Date;
 

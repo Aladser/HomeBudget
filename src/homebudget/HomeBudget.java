@@ -1,9 +1,9 @@
 package homebudget;
 
 import homebudget.frames.MainFrame;
-import homebudget.table.DBControl;
-import homebudget.table.OperationsTableCtrl;
-import homebudget.table.TranscationsTableCtrl;
+import homebudget.models.DBControl;
+import homebudget.controllers.OperationsTableCtrl;
+import homebudget.controllers.TranscationsTableCtrl;
 import java.awt.EventQueue;
 import java.io.File;
 import javax.swing.JOptionPane;

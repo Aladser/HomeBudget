@@ -1,5 +1,6 @@
-package homebudget.table;
+package homebudget.models;
 
+import homebudget.models.TransactionsTableLine;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,7 +26,7 @@ public class TransactionsTableModel implements TableModel{
 
     @Override
     public String getColumnName(int index){ 
-        return index==0 ? "Название" : "Сумма"; 
+        return index==0 ? "Операция" : "Сумма"; 
     }
 
     @Override

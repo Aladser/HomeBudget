@@ -1,5 +1,7 @@
-package homebudget.table;
+package homebudget.controllers;
 
+import homebudget.models.DBConnection;
+import homebudget.models.OperationsTableLine;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 

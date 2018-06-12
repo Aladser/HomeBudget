@@ -1,5 +1,7 @@
-package homebudget.table;
+package homebudget.controllers;
 
+import homebudget.models.DBConnection;
+import homebudget.models.TransactionsTableLine;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;

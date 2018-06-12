@@ -1,4 +1,9 @@
-package homebudget.table;
+package homebudget.models;
+
+import homebudget.models.DBConnection;
+import homebudget.controllers.DBTableCtrl;
+import homebudget.controllers.TranscationsTableCtrl;
+import homebudget.controllers.OperationsTableCtrl;
 
 /** Подключение локальной БД к проекту */
 public class DBControl {

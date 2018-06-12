@@ -1,4 +1,4 @@
-package homebudget.table;
+package homebudget.models;
 
 /** СОЕДИНЕНИЕ С ЛОКАЛЬНОЙ БД */
 public class DBConnection {

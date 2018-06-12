@@ -45,6 +45,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         tableScrollPane.setBackground(new java.awt.Color(255, 255, 255));
 
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMouseClicked(evt);
+            }
+        });
         tableScrollPane.setViewportView(table);
 
         opertsBtn.setBackground(new java.awt.Color(255, 255, 255));
@@ -90,6 +95,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void opertsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opertsBtnActionPerformed
         new OperationsFrame(this, true).setVisible(true);
     }//GEN-LAST:event_opertsBtnActionPerformed
+
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        System.out.println("!");
+    }//GEN-LAST:event_tableMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;

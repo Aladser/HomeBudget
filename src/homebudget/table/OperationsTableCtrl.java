@@ -21,11 +21,17 @@ public class OperationsTableCtrl extends DBTableCtrl{
      * Получение таблицы
      * @return 
      */
-    public java.util.ArrayList<String> getData(){
-        resSet = executeQuery( "SELECT * FROM " + dbName );
-        ArrayList<String> rslt = new ArrayList<>();
+    public java.util.ArrayList<OperationsTableLine> getData(){
+        resSet = executeQuery( "SELECT * FROM " + dbName + " ORDER BY type");
+        ArrayList<OperationsTableLine> rslt = new ArrayList<>();
         try {
-            while( resSet.next() ){ rslt.add(resSet.getString("name")); }
+            OperationsTableLine data;
+            while( resSet.next() ){
+                data = new OperationsTableLine();
+                data.name = resSet.getString("name");
+                data.type = resSet.getInt("type");
+                rslt.add(data); 
+            }
         } catch (java.sql.SQLException ex) {
             JOptionPane.showMessageDialog(null, "OperationsTableCtrl.getData(). Ошибка метода getData()");
             System.exit(42);

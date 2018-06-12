@@ -67,8 +67,6 @@ public class TranscationsTableCtrl extends DBTableCtrl{
                 TransactionsTableLine line = new TransactionsTableLine();
                 line.name = resSet.getString("name");
                 line.value = resSet.getDouble("value");
-                line.date = new Date();
-                line.date.setTime(resSet.getLong("date"));
                 rslt.add(line);
             }
         } catch (SQLException ex) {

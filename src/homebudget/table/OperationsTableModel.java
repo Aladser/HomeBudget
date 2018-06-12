@@ -6,12 +6,12 @@ import java.util.Set;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-public class OperationTableModel implements TableModel{
+public class OperationsTableModel implements TableModel{
     final Set<TableModelListener> lstnrs;
     /** данные таблицы */
-    final ArrayList<String> lines;
+    final ArrayList<OperationsTableLine> lines;
     
-    public OperationTableModel(ArrayList<String> list){
+    public OperationsTableModel(ArrayList<OperationsTableLine> list){
         lstnrs = new HashSet<>();
         lines = list;
     }
@@ -23,16 +23,23 @@ public class OperationTableModel implements TableModel{
     public int getColumnCount() { return 2; }
 
     @Override
-    public String getColumnName(int columnIndex) { return "Название"; }
+    public String getColumnName(int columnIndex) {
+        return columnIndex==0 ? "Название" : "Тип операции"; 
+    }
 
     @Override
-    public Class<?> getColumnClass(int columnIndex) { return String.class; }
+    public Class<?> getColumnClass(int columnIndex) { 
+        return columnIndex==0 ? String.class : Integer.class; 
+    }
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {return false;}
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {return lines.get(rowIndex);}
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        OperationsTableLine data = lines.get(rowIndex);
+        return columnIndex==0 ? data.name : data.type;
+    }
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {}

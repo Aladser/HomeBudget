@@ -21,24 +21,16 @@ public class TransactionsTableModel implements TableModel{
     public int getRowCount() {return lines.size();}
 
     @Override
-    public int getColumnCount() {return 3;}
+    public int getColumnCount() {return 2;}
 
     @Override
-    public String getColumnName(int index){
-        switch(index){
-            case 0: return "Название";
-            case 1: return "Сумма";
-            default: return "Дата";
-        }
+    public String getColumnName(int index){ 
+        return index==0 ? "Название" : "Сумма"; 
     }
 
     @Override
-    public Class<?> getColumnClass(int index) {
-        switch (index) {
-            case 0: return String.class;
-            case 1: return Double.class;
-            default: return Long.class;
-        }
+    public Class<?> getColumnClass(int index) { 
+        return index==0 ? String.class : Double.class;
     }
 
     @Override
@@ -47,11 +39,7 @@ public class TransactionsTableModel implements TableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         TransactionsTableLine data = lines.get(rowIndex);
-        switch(columnIndex){
-            case 0: return data.name;
-            case 1: return data.value;
-            default: return data.date;
-        }
+        return columnIndex==0 ? data.name : data.value; 
     }
 
     @Override

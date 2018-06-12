@@ -1,5 +1,6 @@
-package homebudget;
+package homebudget.frames;
 
+import homebudget.views.TsctTableCellRender;
 import static homebudget.HomeBudget.getTransationsCtrl;
 import homebudget.table.TransactionsTableModel;
 
@@ -10,12 +11,12 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         getContentPane().setBackground(java.awt.Color.white);
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screenSize.width - 1280)/2, (screenSize.height - 720)/2);;
+        setLocation((screenSize.width - getWidth())/2, (screenSize.height - getHeight())/2);
         // таблица transactions
         TransactionsTableModel model = new TransactionsTableModel(getTransationsCtrl().getData());
         table.setModel(model);
-        for(int i=0; i<3; i++) 
-            table.getColumnModel().getColumn(i).setCellRenderer( new TableCellRender() );
+        table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
+        table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
         table.setRowHeight(30);
         table.getTableHeader().setFont(new java.awt.Font("Times New Roman", 1, 14));
         table.getTableHeader().setBackground(new java.awt.Color(240,240,240));
@@ -28,10 +29,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         tableScrollPane = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        opertsBtn = new javax.swing.JButton();
+        addBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Домашний бюджет 2");
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
 
@@ -39,11 +41,16 @@ public class MainFrame extends javax.swing.JFrame {
 
         tableScrollPane.setViewportView(table);
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Операции");
+        opertsBtn.setBackground(new java.awt.Color(255, 255, 255));
+        opertsBtn.setText("Операции");
+        opertsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                opertsBtnActionPerformed(evt);
+            }
+        });
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Добавить");
+        addBtn.setBackground(new java.awt.Color(255, 255, 255));
+        addBtn.setText("Добавить");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -54,8 +61,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(opertsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -64,9 +71,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(opertsBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
+                        .addComponent(addBtn))
                     .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -74,9 +81,13 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void opertsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opertsBtnActionPerformed
+        new OperationsFrame(this, true).setVisible(true);
+    }//GEN-LAST:event_opertsBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton addBtn;
+    private javax.swing.JButton opertsBtn;
     private javax.swing.JTable table;
     private javax.swing.JScrollPane tableScrollPane;
     // End of variables declaration//GEN-END:variables

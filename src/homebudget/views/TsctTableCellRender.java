@@ -1,4 +1,4 @@
-package homebudget;
+package homebudget.views;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,7 +10,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /** Рендер отрисоски таблицы MainFrame */
-public class TableCellRender extends DefaultTableCellRenderer{
+public class TsctTableCellRender extends DefaultTableCellRenderer{
     @Override
     public java.awt.Component getTableCellRendererComponent(
             JTable table, 

@@ -1,5 +1,6 @@
 package homebudget;
 
+import homebudget.frames.MainFrame;
 import homebudget.table.DBControl;
 import homebudget.table.OperationsTableCtrl;
 import homebudget.table.TranscationsTableCtrl;

@@ -5,7 +5,6 @@ import java.util.Date;
 public class TransactionsTableLine {
     public String name;                     
     public double value;
-    public Date date;
  
     /**
      * Строка таблицы игр
@@ -17,9 +16,6 @@ public class TransactionsTableLine {
     public TransactionsTableLine(String n, double v, int st, long lDate){
         name = n;
         value = v*st;
-        Date d = new Date();
-        d.setTime(lDate);
-        date = d;
     }
     
     /** создает пустую строку таблицы игр */

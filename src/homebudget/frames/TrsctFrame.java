@@ -8,12 +8,20 @@ import homebudget.models.TransactionsTableModel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
 public class TrsctFrame extends javax.swing.JFrame {
-
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy г");
+    Date startDate;
+    Date finalDate;
+    
     public TrsctFrame() {
         // рендеринг окна
         initComponents();
@@ -23,13 +31,26 @@ public class TrsctFrame extends javax.swing.JFrame {
         tableScrollPane.setOpaque(true);
         tableScrollPane.getViewport().setBackground(Color.white);
         updateComboBox(typeComboBox.getSelectedIndex());
+        // background элементов
         oprtComboBox.setBackground(Color.white);
         typeComboBox.setBackground(Color.white);
         timeGapPrdBox.setBackground(Color.white);
+        // иконки кнопок
         addBtn.setIcon( new ImageIcon(getClass().getResource("images/addIcon.png")) );
         delBaseBtn.setIcon( new ImageIcon(getClass().getResource("images/delIcon.png")) );
         // таблица transactions
-        table.setModel( new TransactionsTableModel(getTransationsCtrl().getData()) );
+        try {
+            startDate = getTransationsCtrl().getDate(2);
+            finalDate = getTransationsCtrl().getDate(0);
+            startDateTxtBox.setText(dateFormat.format(startDate));
+            finalDateTxtBox.setText(dateFormat.format(finalDate));
+            table.setModel( 
+                new TransactionsTableModel(getTransationsCtrl().getData(startDate, finalDate))
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
+        }
         table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
         table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
         table.setRowHeight(30);
@@ -57,9 +78,8 @@ public class TrsctFrame extends javax.swing.JFrame {
         oprtComboBox = new javax.swing.JComboBox<>();
         typeComboBox = new javax.swing.JComboBox<>();
         delBaseBtn = new javax.swing.JButton();
-        startDateLbl = new javax.swing.JLabel();
         startDateTxtBox = new javax.swing.JTextField();
-        fiinalDateLbl = new javax.swing.JLabel();
+        dateLbl = new javax.swing.JLabel();
         finalDateTxtBox = new javax.swing.JTextField();
         showDataBtn = new javax.swing.JButton();
         timeGapPrdBox = new javax.swing.JComboBox<>();
@@ -115,14 +135,15 @@ public class TrsctFrame extends javax.swing.JFrame {
             }
         });
 
-        startDateLbl.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        startDateLbl.setText("С");
-
+        startDateTxtBox.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        startDateTxtBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         startDateTxtBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        fiinalDateLbl.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        fiinalDateLbl.setText("ПО");
+        dateLbl.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        dateLbl.setText(" -  ");
 
+        finalDateTxtBox.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        finalDateTxtBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         finalDateTxtBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         showDataBtn.setBackground(new java.awt.Color(255, 255, 255));
@@ -130,6 +151,12 @@ public class TrsctFrame extends javax.swing.JFrame {
         showDataBtn.setEnabled(false);
 
         timeGapPrdBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Последний день", "Последний месяц", "Все время", "Вручную" }));
+        timeGapPrdBox.setSelectedIndex(2);
+        timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeGapPrdBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -140,7 +167,7 @@ public class TrsctFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tableScrollPane)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(inputSumFld, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -152,14 +179,13 @@ public class TrsctFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(delBaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(startDateLbl)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(15, 15, 15)
                                 .addComponent(startDateTxtBox, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fiinalDateLbl)
+                                .addComponent(dateLbl)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(finalDateTxtBox, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(timeGapPrdBox, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,13 +209,13 @@ public class TrsctFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(startDateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(startDateTxtBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fiinalDateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(finalDateTxtBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(timeGapPrdBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(showDataBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addComponent(dateLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(finalDateTxtBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(showDataBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(timeGapPrdBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
@@ -221,7 +247,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         double value = Double.parseDouble( inputSumFld.getText() );
         int type = typeComboBox.getSelectedIndex()==0 ? 1: -1;
         getTransationsCtrl().add(name, value, type);
-        table.setModel( new TransactionsTableModel(getTransationsCtrl().getData()) );
+        table.setModel( new TransactionsTableModel(getTransationsCtrl().getData(startDate, finalDate)) );
         inputSumFld.setText("");
         table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
         table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
@@ -229,7 +255,7 @@ public class TrsctFrame extends javax.swing.JFrame {
 
     private void delBaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBaseBtnActionPerformed
         getTransationsCtrl().clearTable();
-        table.setModel( new TransactionsTableModel(getTransationsCtrl().getData()) );
+        table.setModel( new TransactionsTableModel(getTransationsCtrl().getData(startDate, finalDate)) );
         table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
         table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
     }//GEN-LAST:event_delBaseBtnActionPerformed
@@ -238,16 +264,19 @@ public class TrsctFrame extends javax.swing.JFrame {
         inputSumFld.setText("");
     }//GEN-LAST:event_inputSumFldMouseClicked
 
+    private void timeGapPrdBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeGapPrdBoxActionPerformed
+        
+    }//GEN-LAST:event_timeGapPrdBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
+    private javax.swing.JLabel dateLbl;
     private javax.swing.JButton delBaseBtn;
-    private javax.swing.JLabel fiinalDateLbl;
     private javax.swing.JTextField finalDateTxtBox;
     private javax.swing.JTextField inputSumFld;
     private javax.swing.JButton opertsBtn;
     private javax.swing.JComboBox<String> oprtComboBox;
     private javax.swing.JButton showDataBtn;
-    private javax.swing.JLabel startDateLbl;
     private javax.swing.JTextField startDateTxtBox;
     private javax.swing.JTable table;
     private javax.swing.JScrollPane tableScrollPane;

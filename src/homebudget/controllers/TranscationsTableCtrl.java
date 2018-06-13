@@ -4,14 +4,49 @@ import homebudget.models.DBConnection;
 import homebudget.models.TransactionsTableLine;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 
 /** Контроллер таблицы БД */
 public class TranscationsTableCtrl extends DBTableCtrl{
-    public TranscationsTableCtrl(DBConnection db, String dbName) {
-        super(db, dbName);
+    public static final int LAST_DAY_RECORD = 0;
+    public static final int LAST_MONTH_RECORD = 1;
+    public static final int FIRST_DAY_RECORD = 2;
+    
+    public TranscationsTableCtrl(DBConnection db, String dbName){super(db, dbName);}
+    
+    /**
+     * получить Date ключевых дат. 
+     * Дата последней записи = 0;
+     * дате 1 числа последнего месяца = 1;
+     * Дата первой записи = 2;
+     * @param type
+     * @return 
+     * @throws java.sql.SQLException 
+     */
+    public Date getDate(int type) throws SQLException{
+        switch(type){
+            case 0:
+                query = "SELECT MAX(date) date FROM "+ dbName;
+                break;
+            case 1:
+                query = "SELECT MAX(date) date FROM "+ dbName;
+                break;
+            default:
+                query = "SELECT MIN(date) date FROM "+ dbName;
+        }
+        Date date = new Date( executeQuery(query).getLong("date") );
+        if(type==1){
+            GregorianCalendar cldr = new GregorianCalendar();
+            cldr.setTime(date);
+            cldr.set(Calendar.DAY_OF_MONTH, 1);
+            date = cldr.getTime();
+        }
+        return date;
     }
+    
     
     /**
      * Добавить строку
@@ -24,7 +59,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         query += name + "', ";
         query += value + ", ";
         query += type + ", ";
-        query += formatDate() + ")";
+        query += formatDate().getTime() + ")";
         executeQueryNoRes(query);
     }
     
@@ -36,33 +71,14 @@ public class TranscationsTableCtrl extends DBTableCtrl{
      * @param finalDate
      * @return 
      */
-    public ArrayList<TransactionsTableLine> getData(long startDate, long finalDate){
+    public ArrayList<TransactionsTableLine> getData(Date startDate, Date finalDate){
         startDate = formatDate(startDate);
         finalDate = formatDate(finalDate);
-        String sql = "SELECT name, SUM(value*type) value, date FROM "+dbName;
-        sql += " WHERE date>"+startDate+" AND date<"+finalDate+" GROUP BY name ORDER BY value DESC";
-        return mGetData(sql);
-    }
-    /**
-     * Получение таблицы за указанный день
-     * @param date
-     * @return 
-     */
-    public ArrayList<TransactionsTableLine> getData(long date){
-        date = formatDate(date);
-        String sql = "SELECT name, SUM(value*type) value, date FROM "+dbName;
-        sql += " WHERE date="+date+" GROUP BY name ORDER BY value DESC";
-        return mGetData(sql);
-    }
-    /**
-     * Получение таблицы
-     * @return 
-     */
-    public ArrayList<TransactionsTableLine> getData(){
-        return mGetData("SELECT name, SUM(value*type) value, date FROM "+dbName + " GROUP BY name ORDER BY value DESC"); 
-    }
-    
-    public ArrayList<TransactionsTableLine> mGetData(String sql){
+        String sql = "SELECT name, SUM(value*type) value, date FROM "+dbName+" WHERE date";
+        sql += startDate.getTime()==finalDate.getTime() ? 
+                "="+startDate.getTime() : 
+                ">"+startDate.getTime()+" AND date<"+finalDate.getTime();
+        sql += " GROUP BY name ORDER BY value DESC";
         resSet = executeQuery(sql);
         ArrayList<TransactionsTableLine> rslt = new ArrayList<>();
         try {
@@ -80,17 +96,17 @@ public class TranscationsTableCtrl extends DBTableCtrl{
     } 
 
     // обнуляет часы даты
-    private long formatDate(){return mFormatDate(new GregorianCalendar());}    
-    private long formatDate(long date){
+    private Date formatDate(){return mFormatDate(new GregorianCalendar());}    
+    private Date formatDate(Date date){
         GregorianCalendar cldr = new GregorianCalendar();
-        cldr.setTimeInMillis(date);
+        cldr.setTime(date);
         return mFormatDate(cldr);
     }
-    private long mFormatDate(GregorianCalendar cldr){
+    private Date mFormatDate(GregorianCalendar cldr){
         cldr.set(GregorianCalendar.HOUR, 0);
         cldr.set(GregorianCalendar.MINUTE, 0);
         cldr.set(GregorianCalendar.SECOND, 0);
         cldr.set(GregorianCalendar.MILLISECOND, 0);
-        return cldr.getTimeInMillis();
+        return cldr.getTime();
     }
 }

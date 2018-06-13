@@ -1,6 +1,9 @@
 package homebudget.controllers;
 
 import homebudget.models.DBConnection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** БД таблица */
 public abstract class DBTableCtrl {
@@ -19,7 +22,11 @@ public abstract class DBTableCtrl {
     protected void executeQueryNoRes(String query){
         StringBuilder sql = new StringBuilder();
         sql.append(query);
-        db.executeQuery(sql.toString());
+        try {
+            db.executeQuery(sql.toString());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBTableCtrl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** запрос в БД с результатом
@@ -28,7 +35,12 @@ public abstract class DBTableCtrl {
     protected java.sql.ResultSet executeQuery(String query){
         StringBuilder sql = new StringBuilder();
         sql.append(query);
-        return db.executeQuery(sql.toString());
+        try {
+            return db.executeQuery(sql.toString());
+        } catch (SQLException ex) {
+            Logger.getLogger(DBTableCtrl.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     /**

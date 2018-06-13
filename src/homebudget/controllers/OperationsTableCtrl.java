@@ -2,6 +2,7 @@ package homebudget.controllers;
 
 import homebudget.models.DBConnection;
 import homebudget.models.OperationsTableLine;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -11,14 +12,24 @@ public class OperationsTableCtrl extends DBTableCtrl{
     /**
      * Добавить строку
      * @param name
+     * @param type
      */
-    public void add(String name){executeQueryNoRes("INSERT INTO "+dbName+" VALUES (" + name + ")");}
+    public void add(String name, int type){
+        executeQueryNoRes("INSERT INTO "+dbName+" VALUES ('" + name + "', "+type+")");
+    }
     
     /** Удалить строку
      * @param name название  
      */
-    public void remove(String name){executeQueryNoRes("DELETE FROM "+dbName+" WHERE name = '"+name+"'");       }
+    public void remove(String name){
+        executeQueryNoRes("DELETE FROM "+dbName+" WHERE name = '"+name+"'");       
+    }
     
+    public boolean isValue(String name) throws SQLException{
+        query = "SELECT COUNT() count FROM "+dbName+" WHERE name = '"+name+"'";
+        return executeQuery(query).getInt("count") != 0;
+    }
+       
     /**
      * Получение таблицы
      * @return 

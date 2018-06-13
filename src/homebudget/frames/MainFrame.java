@@ -17,7 +17,6 @@ public class MainFrame extends javax.swing.JFrame {
         setLocation((screenSize.width - getWidth())/2, (screenSize.height - getHeight())/2);
         tableScrollPane.setOpaque(true);
         tableScrollPane.getViewport().setBackground(Color.white);
-        
         // таблица transactions
         TransactionsTableModel model = new TransactionsTableModel(getTransationsCtrl().getData());
         table.setModel(model);
@@ -26,7 +25,6 @@ public class MainFrame extends javax.swing.JFrame {
         table.setRowHeight(30);
         table.getTableHeader().setFont(new java.awt.Font("Times New Roman", 1, 14));
         table.getTableHeader().setBackground(new java.awt.Color(240,240,240));
-        
     }
 
     @SuppressWarnings("unchecked")
@@ -98,6 +96,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
         System.out.println("!");
+        
     }//GEN-LAST:event_tableMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

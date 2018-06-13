@@ -1,5 +1,9 @@
 package homebudget.models;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /** СОЕДИНЕНИЕ С ЛОКАЛЬНОЙ БД */
 public class DBConnection {
     private java.sql.Connection conn;
@@ -42,16 +46,15 @@ public class DBConnection {
     }
 
     //** ЗАПРОС В БАЗУ ДАННЫХ **
-    public java.sql.ResultSet executeQuery(String query){
-        //System.out.println(query);
+    public java.sql.ResultSet executeQuery(String query) throws SQLException{
         try{
             if( query.contains("SELECT") ){ 
                 resSet = statmt.executeQuery(query);
                 return resSet;
             }
             else{ statmt.executeUpdate(query); }
-        }catch(java.sql.SQLException e){
-           System.err.println("SQLiteConnector. Ошибка запроса " + query);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

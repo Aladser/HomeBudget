@@ -16,6 +16,13 @@ public class OperationsTableModel implements TableModel{
         lines = list;
     }
 
+    // проверяет наличие элемента в модели
+    public boolean isValue(String name){
+        for(int i=0; i<lines.size(); i++) 
+            if(lines.get(i).name.equals(name)) return true;
+        return false;
+    }
+    
     @Override
     public int getRowCount() { return lines.size(); }
 

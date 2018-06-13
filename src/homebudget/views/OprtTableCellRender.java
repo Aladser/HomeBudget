@@ -7,7 +7,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
-/** Рендер отрисоски таблицы MainFrame */
+/** Рендер отрисоски таблицы Operations */
 public class OprtTableCellRender extends DefaultTableCellRenderer{
     @Override
     public java.awt.Component getTableCellRendererComponent(
@@ -37,6 +37,10 @@ public class OprtTableCellRender extends DefaultTableCellRenderer{
         }
         
         JLabel cell = new JLabel(text);
+        cell.setOpaque(true); // прозрачность для возможности установки фона
+        // фон ячейки
+        Color bgColor = isSelected ? new Color(200,200,200) : Color.white;
+        cell.setBackground(bgColor);
         // шрифт
         Font font = column==0 ? new Font("Arial", 1, 14) : new Font("Arial", 0, 14);
         cell.setFont(font);
@@ -44,7 +48,7 @@ public class OprtTableCellRender extends DefaultTableCellRenderer{
         int align = column==0 ? SwingConstants.LEFT : SwingConstants.RIGHT; 
         cell.setHorizontalAlignment(align);
         
-        table.setRowHeight(30);
+        table.setRowHeight(30); //высота строк
         return cell;
     }
 }

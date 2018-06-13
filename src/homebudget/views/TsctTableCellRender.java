@@ -33,15 +33,14 @@ public class TsctTableCellRender extends DefaultTableCellRenderer{
         }
         
         JLabel cell = new JLabel(text);
+        cell.setFont(new Font("Arial", 0, 14));
+        
         if (column == 1){
             if((double)value>1) cell.setForeground(Color.green);
             else if ((double)value<1) cell.setForeground(Color.red);
         }
-        
-        cell.setFont(new Font("Arial", 0, 14));
         // выравнивание первой колонки
         if(column != 0)  cell.setHorizontalAlignment(SwingConstants.CENTER);
-        
         return cell;
     }
 }

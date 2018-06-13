@@ -24,8 +24,12 @@ public class TsctTableCellRender extends DefaultTableCellRenderer{
         // Содержание JLabel    
         String text = null;
         if(value.getClass() == String.class) text = "   " + (String)value;
-        else if(value.getClass() == Double.class)
-            text = Double.toString((double)value) + " \u0584";
+        else if(value.getClass() == Double.class){
+            if((double)value != 0)
+                text = Double.toString((double)value) + " \u0584";
+            else
+                text = "0 \u0584";
+        }
         else{
             Date d = (Date)value;
             text = new SimpleDateFormat("dd.MM.yyyy").format(d) + " г.";
@@ -36,8 +40,9 @@ public class TsctTableCellRender extends DefaultTableCellRenderer{
         cell.setFont(new Font("Arial", 0, 14));
         
         if (column == 1){
-            if((double)value>1) cell.setForeground(Color.green);
-            else if ((double)value<1) cell.setForeground(Color.red);
+            if((double)value>0) cell.setForeground(Color.green);
+            else if ((double)value<0) cell.setForeground(Color.red);
+            else cell.setForeground(Color.black);
         }
         // выравнивание первой колонки
         if(column != 0)  cell.setHorizontalAlignment(SwingConstants.CENTER);

@@ -14,9 +14,15 @@ import javax.swing.JDialog;
 public class OperationsFrame extends JDialog {
     /** номер выбранной мышью строки */
     int selectionRow = -1;
+    /** родитель */
+    TrsctFrame parent;
+    /** тип операций */
+    final int type;
     
-    public OperationsFrame(Frame parent, boolean modal) {
+    public OperationsFrame(Frame parent, boolean modal, int type) {
         super(parent, modal);
+        this.parent = (TrsctFrame) parent;
+        this.type = type;
         initComponents();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - getWidth())/2, (screenSize.height - getHeight())/2);
@@ -159,6 +165,7 @@ public class OperationsFrame extends JDialog {
             table.getColumnModel().getColumn(i).setCellRenderer( new OprtTableCellRender() );
         inputNewOprtField.setText("");
         addBtn.setEnabled(false);
+        parent.updateComboBox(type);
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void delBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBtnActionPerformed
@@ -168,6 +175,7 @@ public class OperationsFrame extends JDialog {
         for(int i=0; i<2; i++) 
             table.getColumnModel().getColumn(i).setCellRenderer( new OprtTableCellRender() );
         delBtn.setEnabled(false);
+        parent.updateComboBox(type);
     }//GEN-LAST:event_delBtnActionPerformed
 
     private void inputNewOprtFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputNewOprtFieldKeyReleased

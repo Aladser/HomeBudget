@@ -1,6 +1,6 @@
 package homebudget;
 
-import homebudget.frames.MainFrame;
+import homebudget.frames.TrsctFrame;
 import homebudget.models.DBControl;
 import homebudget.controllers.OperationsTableCtrl;
 import homebudget.controllers.TranscationsTableCtrl;
@@ -28,7 +28,7 @@ public class HomeBudget {
     }
      
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {new MainFrame().setVisible(true);});        
+        EventQueue.invokeLater(() -> {new TrsctFrame().setVisible(true);});        
     }
     
 }

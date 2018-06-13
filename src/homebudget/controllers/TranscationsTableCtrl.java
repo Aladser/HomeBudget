@@ -4,7 +4,6 @@ import homebudget.models.DBConnection;
 import homebudget.models.TransactionsTableLine;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 
@@ -29,6 +28,8 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         executeQueryNoRes(query);
     }
     
+    public void clearTable(){ executeQueryNoRes("DELETE FROM " + dbName);}
+    
     /**
      * Получение таблицы за указанный промежуток времени
      * @param startDate
@@ -39,7 +40,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         startDate = formatDate(startDate);
         finalDate = formatDate(finalDate);
         String sql = "SELECT name, SUM(value*type) value, date FROM "+dbName;
-        sql += " WHERE date>"+startDate+" AND date<"+finalDate+" GROUP BY name";
+        sql += " WHERE date>"+startDate+" AND date<"+finalDate+" GROUP BY name ORDER BY value DESC";
         return mGetData(sql);
     }
     /**
@@ -50,7 +51,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
     public ArrayList<TransactionsTableLine> getData(long date){
         date = formatDate(date);
         String sql = "SELECT name, SUM(value*type) value, date FROM "+dbName;
-        sql += " WHERE date="+date+" GROUP BY name";
+        sql += " WHERE date="+date+" GROUP BY name ORDER BY value DESC";
         return mGetData(sql);
     }
     /**
@@ -58,7 +59,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
      * @return 
      */
     public ArrayList<TransactionsTableLine> getData(){
-        return mGetData("SELECT name, SUM(value*type) value, date FROM "+dbName + " GROUP BY name"); 
+        return mGetData("SELECT name, SUM(value*type) value, date FROM "+dbName + " GROUP BY name ORDER BY value DESC"); 
     }
     
     public ArrayList<TransactionsTableLine> mGetData(String sql){

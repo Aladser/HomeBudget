@@ -29,13 +29,24 @@ public class OperationsTableCtrl extends DBTableCtrl{
         query = "SELECT COUNT() count FROM "+dbName+" WHERE name = '"+name+"'";
         return executeQuery(query).getInt("count") != 0;
     }
-       
+    
+    
+    
+    public ArrayList<OperationsTableLine> getData(int type){
+        String sql = "SELECT * FROM " + dbName + " WHERE type = "+type+"  OR type=2 ORDER BY type";
+        return mGetData(sql);
+    }
+    public ArrayList<OperationsTableLine> getData(){
+        String sql = "SELECT * FROM " + dbName + " ORDER BY type";
+        return mGetData(sql);
+    }
     /**
      * Получение таблицы
+     * @param sql
      * @return 
      */
-    public java.util.ArrayList<OperationsTableLine> getData(){
-        resSet = executeQuery( "SELECT * FROM " + dbName + " ORDER BY type");
+    public ArrayList<OperationsTableLine> mGetData(String sql){
+        resSet = executeQuery(sql);
         ArrayList<OperationsTableLine> rslt = new ArrayList<>();
         try {
             OperationsTableLine data;

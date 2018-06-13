@@ -1,6 +1,6 @@
 package homebudget.frames;
 
-import static homebudget.HomeBudget.getOperationsCtrl;
+import static homebudget.HomeBudget.OPRTS;
 import homebudget.views.OprtTableCellRender;
 import homebudget.models.OperationsTableModel;
 import java.awt.Color;
@@ -32,7 +32,7 @@ public class OperationsFrame extends JDialog {
         addBtn.setIcon( new ImageIcon(getClass().getResource("images/addIcon.png")) );
         delBtn.setIcon( new ImageIcon(getClass().getResource("images/delIcon.png")) );
         // таблица
-        table.setModel( new OperationsTableModel(getOperationsCtrl().getData()) );
+        table.setModel( new OperationsTableModel(OPRTS.getData()) );
         for(int i=0; i<2; i++) 
             table.getColumnModel().getColumn(i).setCellRenderer( new OprtTableCellRender() );
         table.getTableHeader().setFont(new Font("Times New Roman", 1, 14));
@@ -159,8 +159,8 @@ public class OperationsFrame extends JDialog {
         }
         
         int type = typeOprtTypeComboBox.getSelectedIndex();
-        getOperationsCtrl().add(name, type);
-        table.setModel( new OperationsTableModel(getOperationsCtrl().getData()) );
+        OPRTS.add(name, type);
+        table.setModel( new OperationsTableModel(OPRTS.getData()) );
         for(int i=0; i<2; i++) 
             table.getColumnModel().getColumn(i).setCellRenderer( new OprtTableCellRender() );
         inputNewOprtField.setText("");
@@ -170,8 +170,8 @@ public class OperationsFrame extends JDialog {
 
     private void delBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBtnActionPerformed
         String name = (String)(table.getValueAt(table.getSelectedRow(), 0));
-        getOperationsCtrl().remove(name);
-        table.setModel( new OperationsTableModel(getOperationsCtrl().getData()) );
+        OPRTS.remove(name);
+        table.setModel( new OperationsTableModel(OPRTS.getData()) );
         for(int i=0; i<2; i++) 
             table.getColumnModel().getColumn(i).setCellRenderer( new OprtTableCellRender() );
         delBtn.setEnabled(false);

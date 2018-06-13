@@ -6,9 +6,15 @@ import homebudget.controllers.OperationsTableCtrl;
 import homebudget.controllers.TranscationsTableCtrl;
 import java.awt.EventQueue;
 import java.io.File;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class HomeBudget {
+    public static final TranscationsTableCtrl TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
+    public static final OperationsTableCtrl OPRTS = (OperationsTableCtrl) getDB().getTable(1);
+    
     // проверяет наличие БД 
     private static DBControl getDB(){
         String DB_PATH = "hbdb.s3db";
@@ -19,16 +25,13 @@ public class HomeBudget {
         return new DBControl(DB_PATH);
     }
     
-    public static TranscationsTableCtrl getTransationsCtrl(){
-        return (TranscationsTableCtrl) getDB().getTable(0);
-    }
-    
-    public static OperationsTableCtrl getOperationsCtrl(){
-        return (OperationsTableCtrl) getDB().getTable(1);
-    }
-     
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {new TrsctFrame().setVisible(true);});        
+        EventQueue.invokeLater(() -> {try {
+            new TrsctFrame().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(HomeBudget.class.getName()).log(Level.SEVERE, null, ex);
+            }
+});        
     }
     
 }

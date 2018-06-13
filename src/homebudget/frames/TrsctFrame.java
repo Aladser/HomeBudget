@@ -1,8 +1,8 @@
 package homebudget.frames;
 
-import static homebudget.HomeBudget.getOperationsCtrl;
+import static homebudget.HomeBudget.OPRTS;
+import static homebudget.HomeBudget.TRSCTS;
 import homebudget.views.TsctTableCellRender;
-import static homebudget.HomeBudget.getTransationsCtrl;
 import homebudget.models.OperationsTableLine;
 import homebudget.models.TransactionsTableModel;
 import java.awt.Color;
@@ -12,8 +12,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
@@ -22,7 +20,8 @@ public class TrsctFrame extends javax.swing.JFrame {
     Date startDate;
     Date finalDate;
     
-    public TrsctFrame() {
+    
+    public TrsctFrame() throws SQLException {
         // рендеринг окна
         initComponents();
         getContentPane().setBackground(Color.white);
@@ -39,18 +38,13 @@ public class TrsctFrame extends javax.swing.JFrame {
         addBtn.setIcon( new ImageIcon(getClass().getResource("images/addIcon.png")) );
         delBaseBtn.setIcon( new ImageIcon(getClass().getResource("images/delIcon.png")) );
         // таблица transactions
-        try {
-            startDate = getTransationsCtrl().getDate(2);
-            finalDate = getTransationsCtrl().getDate(0);
+            startDate = TRSCTS.getDate(2);
+            finalDate = TRSCTS.getDate(0);
             startDateTxtBox.setText(dateFormat.format(startDate));
             finalDateTxtBox.setText(dateFormat.format(finalDate));
             table.setModel( 
-                new TransactionsTableModel(getTransationsCtrl().getData(startDate, finalDate))
+                new TransactionsTableModel(TRSCTS.getData(startDate, finalDate))
             );
-        } catch (SQLException ex) {
-            Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(0);
-        }
         table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
         table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
         table.setRowHeight(30);
@@ -60,7 +54,7 @@ public class TrsctFrame extends javax.swing.JFrame {
    
     // модель choiceOprtComboBox
     public void updateComboBox(int type){
-        ArrayList<OperationsTableLine> data = getOperationsCtrl().getData(typeComboBox.getSelectedIndex());
+        ArrayList<OperationsTableLine> data = OPRTS.getData(typeComboBox.getSelectedIndex());
         DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<>();
         for(int i=0; i<data.size(); i++) cbModel.addElement(data.get(i).name);
         oprtComboBox.setModel(cbModel);        
@@ -246,16 +240,16 @@ public class TrsctFrame extends javax.swing.JFrame {
         String name = (String)oprtComboBox.getSelectedItem();
         double value = Double.parseDouble( inputSumFld.getText() );
         int type = typeComboBox.getSelectedIndex()==0 ? 1: -1;
-        getTransationsCtrl().add(name, value, type);
-        table.setModel( new TransactionsTableModel(getTransationsCtrl().getData(startDate, finalDate)) );
+        TRSCTS.add(name, value, type);
+        table.setModel( new TransactionsTableModel(TRSCTS.getData(startDate, finalDate)) );
         inputSumFld.setText("");
         table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
         table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void delBaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBaseBtnActionPerformed
-        getTransationsCtrl().clearTable();
-        table.setModel( new TransactionsTableModel(getTransationsCtrl().getData(startDate, finalDate)) );
+        TRSCTS.clearTable();
+        table.setModel( new TransactionsTableModel(TRSCTS.getData(startDate, finalDate)) );
         table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
         table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
     }//GEN-LAST:event_delBaseBtnActionPerformed

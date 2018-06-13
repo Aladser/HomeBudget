@@ -52,7 +52,10 @@ public class DBConnection {
                 resSet = statmt.executeQuery(query);
                 return resSet;
             }
-            else{ statmt.executeUpdate(query); }
+            else{ 
+                statmt.executeUpdate(query);
+                return null;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }

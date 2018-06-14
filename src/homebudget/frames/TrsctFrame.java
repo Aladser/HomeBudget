@@ -2,6 +2,7 @@ package homebudget.frames;
 
 import static homebudget.HomeBudget.OPRTS;
 import static homebudget.HomeBudget.TRSCTS;
+import homebudget.controllers.TranscationsTableCtrl;
 import homebudget.views.TsctTableCellRender;
 import homebudget.models.OperationsTableLine;
 import homebudget.models.TransactionsTableModel;
@@ -12,14 +13,16 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.table.JTableHeader;
 
 public class TrsctFrame extends javax.swing.JFrame {
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy г");
     Date startDate;
     Date finalDate;
-    
     
     public TrsctFrame() throws SQLException {
         // рендеринг окна
@@ -36,20 +39,13 @@ public class TrsctFrame extends javax.swing.JFrame {
         timeGapPrdBox.setBackground(Color.white);
         // иконки кнопок
         addBtn.setIcon( new ImageIcon(getClass().getResource("images/addIcon.png")) );
-        delBaseBtn.setIcon( new ImageIcon(getClass().getResource("images/delIcon.png")) );
-        // таблица transactions
-            startDate = TRSCTS.getDate(2);
-            finalDate = TRSCTS.getDate(0);
-            startDateTxtBox.setText(dateFormat.format(startDate));
-            finalDateTxtBox.setText(dateFormat.format(finalDate));
-            table.setModel( 
-                new TransactionsTableModel(TRSCTS.getData(startDate, finalDate))
-            );
-        table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
-        table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
+        delBaseBtn.setIcon( new ImageIcon(getClass().getResource("images/returnIcon.png")) );
+        // рендер таблицы
         table.setRowHeight(30);
-        table.getTableHeader().setFont(new java.awt.Font("Times New Roman", 1, 14));
-        table.getTableHeader().setBackground(new java.awt.Color(240,240,240));   
+        JTableHeader tableHeader = table.getTableHeader();  
+        tableHeader.setFont(new java.awt.Font("Times New Roman", 1, 14));
+        tableHeader.setBackground(new java.awt.Color(240,240,240));
+        updateTable();
     }
    
     // модель choiceOprtComboBox
@@ -58,7 +54,28 @@ public class TrsctFrame extends javax.swing.JFrame {
         DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<>();
         for(int i=0; i<data.size(); i++) cbModel.addElement(data.get(i).name);
         oprtComboBox.setModel(cbModel);        
-    }    
+    }
+    
+    // рендер таблицы
+    private void updateTable() throws SQLException{
+        // первая дата
+        startDate = TRSCTS.getDate(timeGapPrdBox.getSelectedIndex());
+        String startDateTxt = dateFormat.format(startDate); 
+        startDateTxtBox.setText(startDateTxt);
+        // вторая дата
+        long finalDateMS = new Date().getTime() + TranscationsTableCtrl.ONE_DAY_IN_MS;
+        finalDate = new Date();
+        finalDate.setTime(finalDateMS);
+        String finalDateTxt = dateFormat.format(new Date());
+        finalDateTxtBox.setText(finalDateTxt);
+        // рендер
+        if( timeGapPrdBox.getSelectedIndex()==2 )
+            table.setModel( new TransactionsTableModel(TRSCTS.getData()));
+        else
+            table.setModel( new TransactionsTableModel(TRSCTS.getData(startDate, finalDate)));
+        table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
+        table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -79,7 +96,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         timeGapPrdBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Домашний бюджет 2");
+        setTitle("Домашний бюджет 2.104");
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
 
@@ -96,6 +113,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         });
 
         addBtn.setBackground(new java.awt.Color(255, 255, 255));
+        addBtn.setToolTipText("Добавить");
         addBtn.setEnabled(false);
         addBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,6 +141,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         });
 
         delBaseBtn.setBackground(new java.awt.Color(255, 255, 255));
+        delBaseBtn.setToolTipText("Отменить последнюю операцию");
         delBaseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delBaseBtnActionPerformed(evt);
@@ -145,7 +164,6 @@ public class TrsctFrame extends javax.swing.JFrame {
         showDataBtn.setEnabled(false);
 
         timeGapPrdBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Последний день", "Последний месяц", "Все время", "Вручную" }));
-        timeGapPrdBox.setSelectedIndex(2);
         timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 timeGapPrdBoxActionPerformed(evt);
@@ -237,21 +255,22 @@ public class TrsctFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_inputSumFldKeyReleased
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        String name = (String)oprtComboBox.getSelectedItem();
-        double value = Double.parseDouble( inputSumFld.getText() );
-        int type = typeComboBox.getSelectedIndex()==0 ? 1: -1;
-        TRSCTS.add(name, value, type);
-        table.setModel( new TransactionsTableModel(TRSCTS.getData(startDate, finalDate)) );
-        inputSumFld.setText("");
-        table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
-        table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
+        try {
+            String name = (String)oprtComboBox.getSelectedItem();
+            double value = Double.parseDouble( inputSumFld.getText() );
+            int type = typeComboBox.getSelectedIndex()==0 ? 1: -1;
+            TRSCTS.add(name, value, type);
+            inputSumFld.setText("");
+            updateTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void delBaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBaseBtnActionPerformed
         TRSCTS.clearTable();
-        table.setModel( new TransactionsTableModel(TRSCTS.getData(startDate, finalDate)) );
-        table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
-        table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
+        try {updateTable();} 
+        catch (SQLException ex){Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);}
     }//GEN-LAST:event_delBaseBtnActionPerformed
 
     private void inputSumFldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputSumFldMouseClicked
@@ -259,7 +278,8 @@ public class TrsctFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_inputSumFldMouseClicked
 
     private void timeGapPrdBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeGapPrdBoxActionPerformed
-        
+        try {updateTable();
+        } catch (SQLException ex) {Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);}
     }//GEN-LAST:event_timeGapPrdBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

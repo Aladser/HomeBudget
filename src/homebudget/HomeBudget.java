@@ -7,6 +7,9 @@ import homebudget.controllers.TranscationsTableCtrl;
 import java.awt.EventQueue;
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -25,7 +28,7 @@ public class HomeBudget {
         return new DBControl(DB_PATH);
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) {  
         EventQueue.invokeLater(() -> {try {
             new TrsctFrame().setVisible(true);
             } catch (SQLException ex) {

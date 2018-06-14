@@ -14,40 +14,54 @@ public class TranscationsTableCtrl extends DBTableCtrl{
     public static final int LAST_DAY_RECORD = 0;
     public static final int LAST_MONTH_RECORD = 1;
     public static final int FIRST_DAY_RECORD = 2;
+    public static final long ONE_DAY_IN_MS = 86400000;
     
     public TranscationsTableCtrl(DBConnection db, String dbName){super(db, dbName);}
     
     /**
-     * получить Date ключевых дат. 
-     * Дата последней записи = 0;
-     * дате 1 числа последнего месяца = 1;
-     * Дата первой записи = 2;
-     * @param type
+     * получить Date ключевых дат
+     * @param type дата последней записи - 0; дата первого числа последнего месяца - 1; Дата первой записи - 2 
      * @return 
      * @throws java.sql.SQLException 
      */
     public Date getDate(int type) throws SQLException{
-        switch(type){
+        // если нет даты
+        if(type == 0 || type == 1) 
+            query = "SELECT MAX(date) date FROM "+ dbName;
+        else 
+            query = "SELECT MIN(date) date FROM "+ dbName;
+        Date date = new Date( executeQuery(query).getLong("date") );
+        GregorianCalendar cldr = new GregorianCalendar();
+        cldr.setTime(date);
+        int day = cldr.get(Calendar.DAY_OF_MONTH);
+        int month = cldr.get(Calendar.MONTH);
+        int year = cldr.get(Calendar.YEAR);
+             
+        switch (type) {
             case 0:
-                query = "SELECT MAX(date) date FROM "+ dbName;
+            {
+                cldr.clear();
+                cldr.set(Calendar.DAY_OF_MONTH, day);
                 break;
+            }
             case 1:
-                query = "SELECT MAX(date) date FROM "+ dbName;
+                cldr.clear();
+                cldr.set(Calendar.DAY_OF_MONTH, 1);
                 break;
             default:
-                query = "SELECT MIN(date) date FROM "+ dbName;
+            {
+                cldr.clear();
+                cldr.set(Calendar.DAY_OF_MONTH, day);
+                break;
+            }
         }
-        Date date = new Date( executeQuery(query).getLong("date") );
-        if(type==1){
-            GregorianCalendar cldr = new GregorianCalendar();
-            cldr.setTime(date);
-            cldr.set(Calendar.DAY_OF_MONTH, 1);
-            date = cldr.getTime();
-        }
+        
+        cldr.set(Calendar.MONTH, month);
+        cldr.set(Calendar.YEAR, year);
+        date = cldr.getTime();        
         return date;
     }
-    
-    
+
     /**
      * Добавить строку
      * @param name
@@ -59,31 +73,37 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         query += name + "', ";
         query += value + ", ";
         query += type + ", ";
-        query += formatDate().getTime() + ")";
+        query += new Date().getTime() + ")";
         executeQueryNoRes(query);
     }
     
-    public void clearTable(){ executeQueryNoRes("DELETE FROM " + dbName);}
+    public void clearTable(){
+        query = "DELETE FROM "+dbName+" WHERE date=(SELECT MAX(date) FROM transactions)";
+        executeQueryNoRes(query);
+    }
+    
+    public ArrayList<TransactionsTableLine> getData(Date startDate, Date finalDate){
+        query = "SELECT name, SUM(value*type) value, date FROM "+dbName+" WHERE date";
+        query += ">"+startDate.getTime()+" AND date<"+finalDate.getTime();
+        return mGetData();
+    }
+    public ArrayList<TransactionsTableLine> getData(){
+        query = "SELECT name, SUM(value*type) value, date FROM "+dbName;
+        return mGetData();
+    }    
     
     /**
      * Получение таблицы за указанный промежуток времени
-     * @param startDate
-     * @param finalDate
      * @return 
      */
-    public ArrayList<TransactionsTableLine> getData(Date startDate, Date finalDate){
-        startDate = formatDate(startDate);
-        finalDate = formatDate(finalDate);
-        String sql = "SELECT name, SUM(value*type) value, date FROM "+dbName+" WHERE date";
-        sql += startDate.getTime()==finalDate.getTime() ? 
-                "="+startDate.getTime() : 
-                ">"+startDate.getTime()+" AND date<"+finalDate.getTime();
-        sql += " GROUP BY name ORDER BY value DESC";
-        resSet = executeQuery(sql);
+    public ArrayList<TransactionsTableLine> mGetData(){
+        query += " GROUP BY name ORDER BY value DESC";
+        resSet = executeQuery(query);
         ArrayList<TransactionsTableLine> rslt = new ArrayList<>();
+        TransactionsTableLine line;
         try {
             while( resSet.next() ){
-                TransactionsTableLine line = new TransactionsTableLine();
+                line = new TransactionsTableLine();
                 line.name = resSet.getString("name");
                 line.value = resSet.getDouble("value");
                 rslt.add(line);
@@ -93,20 +113,5 @@ public class TranscationsTableCtrl extends DBTableCtrl{
             System.exit(42);
         }
         return rslt;        
-    } 
-
-    // обнуляет часы даты
-    private Date formatDate(){return mFormatDate(new GregorianCalendar());}    
-    private Date formatDate(Date date){
-        GregorianCalendar cldr = new GregorianCalendar();
-        cldr.setTime(date);
-        return mFormatDate(cldr);
-    }
-    private Date mFormatDate(GregorianCalendar cldr){
-        cldr.set(GregorianCalendar.HOUR, 0);
-        cldr.set(GregorianCalendar.MINUTE, 0);
-        cldr.set(GregorianCalendar.SECOND, 0);
-        cldr.set(GregorianCalendar.MILLISECOND, 0);
-        return cldr.getTime();
     }
 }

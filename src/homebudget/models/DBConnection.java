@@ -48,7 +48,7 @@ public class DBConnection {
     //** ЗАПРОС В БАЗУ ДАННЫХ **
     public java.sql.ResultSet executeQuery(String query) throws SQLException{
         try{
-            if( query.contains("SELECT") ){ 
+            if( query.contains("SELECT") && !query.contains("DELETE")){ 
                 resSet = statmt.executeQuery(query);
                 return resSet;
             }

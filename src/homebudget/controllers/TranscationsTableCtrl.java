@@ -114,4 +114,11 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         }
         return rslt;        
     }
+    
+    /** баланс
+     * @return 
+     * @throws java.sql.SQLException */
+    public double getBalance() throws SQLException{
+        return executeQuery("SELECT SUM(value) val FROM transactions").getDouble("val");
+    }
 }

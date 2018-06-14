@@ -60,7 +60,7 @@ public class TrsctFrame extends javax.swing.JFrame {
     private void updateTable() throws SQLException{
         // первая дата
         startDate = TRSCTS.getDate(timeGapPrdBox.getSelectedIndex());
-        String startDateTxt = dateFormat.format(startDate); 
+        String startDateTxt = dateFormat.format(startDate);
         startDateTxtBox.setText(startDateTxt);
         // вторая дата
         long finalDateMS = new Date().getTime() + TranscationsTableCtrl.ONE_DAY_IN_MS;

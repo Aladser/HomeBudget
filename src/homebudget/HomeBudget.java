@@ -8,6 +8,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -46,6 +48,17 @@ public class HomeBudget {
             );
             return new Font("Consolas", Font.PLAIN, 15);
         }
+    }
+    
+    /** Обнулить часы даты
+     * @param cldr
+     * @return  */
+    public static GregorianCalendar setHourZero(GregorianCalendar cldr){
+        cldr.set(Calendar.HOUR_OF_DAY, 0);
+        cldr.set(Calendar.MINUTE, 0);
+        cldr.set(Calendar.SECOND, 0);
+        cldr.set(Calendar.MILLISECOND, 0);
+        return cldr;
     }
     
     public static void main(String[] args) {

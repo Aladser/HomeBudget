@@ -5,6 +5,7 @@ import homebudget.models.TransactionsTableLine;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -45,9 +46,9 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         executeQueryNoRes(query);
     }
     
-    public ArrayList<TransactionsTableLine> getData(Date startDate, Date finalDate){
+    public ArrayList<TransactionsTableLine> getData(GregorianCalendar startDate, GregorianCalendar finalDate){
         query = "SELECT name, SUM(value*type) value, date FROM "+dbName+" WHERE date";
-        query += ">"+startDate.getTime()+" AND date<"+finalDate.getTime();
+        query += ">"+startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();
         return mGetData();
     }
     public ArrayList<TransactionsTableLine> getData(){
@@ -82,9 +83,9 @@ public class TranscationsTableCtrl extends DBTableCtrl{
      * @param startDate
      * @param finalDate
      * @return */
-    public double getTotalIncome(Date startDate, Date finalDate){
+    public double getTotalIncome(GregorianCalendar startDate, GregorianCalendar finalDate){
         query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=1 AND date>";
-        query += startDate.getTime()+" AND date<"+finalDate.getTime();
+        query += startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();
         return mGetTotalIncome();
     }
     /** Общий доход
@@ -108,9 +109,9 @@ public class TranscationsTableCtrl extends DBTableCtrl{
      * @param startDate
      * @param finalDate
      * @return */
-    public double getTotalExpense(Date startDate, Date finalDate){
+    public double getTotalExpense(GregorianCalendar startDate, GregorianCalendar finalDate){
         query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=-1 AND date>";
-        query += startDate.getTime()+" AND date<"+finalDate.getTime();
+        query += startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();
         return mGetTotalIncome();
     }
     /** Общий доход

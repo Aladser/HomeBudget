@@ -64,9 +64,9 @@ public class HomeBudget {
     }
     
     public static void main(String[] args) {
-        HomeBudget launcher = new HomeBudget();
+        
         EventQueue.invokeLater(() -> {try {
-            new TrsctFrame(launcher).setVisible(true);
+            new TrsctFrame(new HomeBudget()).setVisible(true);
             } catch (SQLException | AWTException ex) {
                 Logger.getLogger(HomeBudget.class.getName()).log(Level.SEVERE, null, ex);
             }

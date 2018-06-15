@@ -29,7 +29,8 @@ public class TrsctFrame extends javax.swing.JFrame {
     final GregorianCalendar FIRST_DATE_RECORD; 
     /** Сегодняшняя дата */
     final GregorianCalendar LAST_DATE_RECORD;
-    boolean isQuerydata = false;
+    /** Вручную введенные даты */
+    boolean isManualData = false;
     
     public TrsctFrame(homebudget.HomeBudget launcher) throws SQLException, AWTException {
         this.launcher = launcher;
@@ -41,6 +42,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         // рендеринг окна
         initComponents();
         getContentPane().setBackground(Color.white);
+        setIconImage( new ImageIcon( getClass().getResource("images/logo.png") ).getImage() );
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - getWidth())/2, (screenSize.height - getHeight())/2);
         tableScrollPane.setOpaque(true);
@@ -82,19 +84,19 @@ public class TrsctFrame extends javax.swing.JFrame {
     // управление данными окна
     private void updateData() throws SQLException{
         int choicePar = timeGapPrdBox.getSelectedIndex();
-        
-        if(isQuerydata){
-            table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDateCldr.getTime(), finalDateCldr.getTime())));
-            incValLbl.setText(Double.toString(launcher.TRSCTS.getTotalIncome(startDateCldr.getTime(), finalDateCldr.getTime()))+" Р");
-            expValLbl.setText(Double.toString(launcher.TRSCTS.getTotalExpense(startDateCldr.getTime(), finalDateCldr.getTime()))+" Р");
+        // есть вручную введенные даты
+        if(isManualData){
+            table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDateCldr, finalDateCldr)));
+            incValLbl.setText(Double.toString(launcher.TRSCTS.getTotalIncome(startDateCldr, finalDateCldr))+" Р");
+            expValLbl.setText(Double.toString(launcher.TRSCTS.getTotalExpense(startDateCldr, finalDateCldr))+" Р");
             table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
             table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
-            isQuerydata = false;
+            isManualData = false;
             return;
         }
         showDataBtn.setEnabled(false);
         // выбор ручного ввода даты
-        if(choicePar == 3 && !isQuerydata){
+        if(choicePar == 3 && !isManualData){
             startDateChooserBox.setMinDate(FIRST_DATE_RECORD);
             finalDateChooserBox.setMinDate(startDateChooserBox.getSelectedDate());
             startDateChooserBox.setMaxDate(LAST_DATE_RECORD);
@@ -102,7 +104,7 @@ public class TrsctFrame extends javax.swing.JFrame {
             lockDateChoice(false);
             return;
         }
-        // обнуление стартовой даты для других choicePar
+        // убрать ограничение стартовой даты для других choicePar
        else{
            GregorianCalendar cldr = new GregorianCalendar();
            cldr.clear();
@@ -124,9 +126,9 @@ public class TrsctFrame extends javax.swing.JFrame {
             expValLbl.setText(Double.toString(launcher.TRSCTS.getTotalExpense())+" Р");
         }
         else{
-            table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDate.getTime(), LAST_DATE_RECORD.getTime())));
-            incValLbl.setText(Double.toString(launcher.TRSCTS.getTotalIncome(startDate.getTime(), LAST_DATE_RECORD.getTime()))+" Р");
-            expValLbl.setText(Double.toString(launcher.TRSCTS.getTotalExpense(startDate.getTime(), LAST_DATE_RECORD.getTime()))+" Р");
+            table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDate, LAST_DATE_RECORD)));
+            incValLbl.setText(Double.toString(launcher.TRSCTS.getTotalIncome(startDate, LAST_DATE_RECORD))+" Р");
+            expValLbl.setText(Double.toString(launcher.TRSCTS.getTotalExpense(startDate, LAST_DATE_RECORD))+" Р");
         }
         table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
         table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
@@ -517,7 +519,7 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         startDateCldr = homebudget.HomeBudget.setHourZero(startDateCldr);
         finalDateCldr = (GregorianCalendar) finalDateChooserBox.getSelectedDate();
         try {
-            isQuerydata = true;
+            isManualData = true;
             updateData();
         } catch (SQLException ex) {
             Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,12 +1,15 @@
 package homebudget.frames;
 
+import com.sun.glass.ui.Robot;
 import homebudget.views.TsctTableCellRender;
 import homebudget.models.OperationsTableLine;
 import homebudget.models.TransactionsTableModel;
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ public class TrsctFrame extends javax.swing.JFrame {
     /** Сегодняшняя дата */
     final GregorianCalendar LAST_DATE_RECORD;
     
-    public TrsctFrame(homebudget.HomeBudget launcher) throws SQLException {
+    public TrsctFrame(homebudget.HomeBudget launcher) throws SQLException, AWTException {
         this.launcher = launcher;
         // инициализация крайних дат
         FIRST_DATE_RECORD = new GregorianCalendar();
@@ -62,6 +65,8 @@ public class TrsctFrame extends javax.swing.JFrame {
         digitalFont = digitalFont.deriveFont(Font.PLAIN, 20);
         balanceLbl.setFont(digitalFont);
         // ограничение выбора последней даты
+        finalDateChooserBox.setMaxDate(LAST_DATE_RECORD);
+        startDateChooserBox.setMaxDate(LAST_DATE_RECORD);
         updateData();
     }
    
@@ -76,10 +81,21 @@ public class TrsctFrame extends javax.swing.JFrame {
     // управление данными окна
     private void updateData() throws SQLException{
         int choicePar = timeGapPrdBox.getSelectedIndex();
+        // выбор ручного ввода даты
         if(choicePar == 3){
-            System.exit(0);
-            
+            startDateChooserBox.setMinDate(FIRST_DATE_RECORD);
+            finalDateChooserBox.setMinDate(startDateChooserBox.getSelectedDate());
+            startDateChooserBox.setMaxDate(LAST_DATE_RECORD);
+            showDataBtn.setEnabled(true);
+            lockDateChoice(false);
+            return;
         }
+        // обнуление стартовой датыдля других choicePar
+       else{
+           GregorianCalendar cldr = new GregorianCalendar();
+           cldr.clear();
+           startDateChooserBox.setMinDate(cldr);
+       }
         // дата начала периода
         GregorianCalendar startDate = new GregorianCalendar();
         if(choicePar==1) startDate.set(Calendar.DAY_OF_MONTH, 1);
@@ -88,10 +104,9 @@ public class TrsctFrame extends javax.swing.JFrame {
         // обновление DateComboBox'ов с учетом блокировки элемента
         lockDateChoice(false);
         startDateChooserBox.setSelectedDate(startDate);
-        finalDateChooserBox.setSelectedDate(new GregorianCalendar());
         lockDateChoice(true);
         // рендер таблицы
-        if( timeGapPrdBox.getSelectedIndex()==2 )
+        if( choicePar == 2 )
             table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData()));
         else
             table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDate.getTime(), LAST_DATE_RECORD.getTime())));
@@ -302,6 +317,7 @@ public class TrsctFrame extends javax.swing.JFrame {
             true)));
 finalDateChooserBox.setLocked(true);
 finalDateChooserBox.setNothingAllowed(false);
+finalDateChooserBox.setFormat(0);
 finalDateChooserBox.setCalendarBackground(new java.awt.Color(255, 255, 255));
 finalDateChooserBox.setFieldFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
 finalDateChooserBox.setNavigateFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));

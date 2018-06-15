@@ -29,6 +29,7 @@ public class TrsctFrame extends javax.swing.JFrame {
     final GregorianCalendar FIRST_DATE_RECORD; 
     /** Сегодняшняя дата */
     final GregorianCalendar LAST_DATE_RECORD;
+    boolean isQuerydata = false;
     
     public TrsctFrame(homebudget.HomeBudget launcher) throws SQLException, AWTException {
         this.launcher = launcher;
@@ -81,8 +82,18 @@ public class TrsctFrame extends javax.swing.JFrame {
     // управление данными окна
     private void updateData() throws SQLException{
         int choicePar = timeGapPrdBox.getSelectedIndex();
+        
+        if(isQuerydata){
+            table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDateCldr.getTime(), finalDateCldr.getTime())));
+            incValLbl.setText(Double.toString(launcher.TRSCTS.getTotalIncome(startDateCldr.getTime(), finalDateCldr.getTime()))+" Р");
+            expValLbl.setText(Double.toString(launcher.TRSCTS.getTotalExpense(startDateCldr.getTime(), finalDateCldr.getTime()))+" Р");
+            table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
+            table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
+            isQuerydata = false;
+            return;
+        }
         // выбор ручного ввода даты
-        if(choicePar == 3){
+        if(choicePar == 3 && !isQuerydata){
             startDateChooserBox.setMinDate(FIRST_DATE_RECORD);
             finalDateChooserBox.setMinDate(startDateChooserBox.getSelectedDate());
             startDateChooserBox.setMaxDate(LAST_DATE_RECORD);
@@ -90,7 +101,7 @@ public class TrsctFrame extends javax.swing.JFrame {
             lockDateChoice(false);
             return;
         }
-        // обнуление стартовой датыдля других choicePar
+        // обнуление стартовой даты для других choicePar
        else{
            GregorianCalendar cldr = new GregorianCalendar();
            cldr.clear();
@@ -255,16 +266,6 @@ public class TrsctFrame extends javax.swing.JFrame {
     startDateChooserBox.setCalendarBackground(new java.awt.Color(255, 255, 255));
     startDateChooserBox.setFieldFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
     startDateChooserBox.setNavigateFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
-    startDateChooserBox.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
-        public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
-            startDateChooserBoxOnSelectionChange(evt);
-        }
-    });
-    startDateChooserBox.addCommitListener(new datechooser.events.CommitListener() {
-        public void onCommit(datechooser.events.CommitEvent evt) {
-            startDateChooserBoxOnCommit(evt);
-        }
-    });
 
     finalDateChooserBox.setBehavior(datechooser.model.multiple.MultyModelBehavior.SELECT_SINGLE);
     finalDateChooserBox.setCurrentView(new datechooser.view.appearance.AppearancesList("Light",
@@ -314,27 +315,22 @@ finalDateChooserBox.setFormat(0);
 finalDateChooserBox.setCalendarBackground(new java.awt.Color(255, 255, 255));
 finalDateChooserBox.setFieldFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
 finalDateChooserBox.setNavigateFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
-finalDateChooserBox.addSelectionChangedListener(new datechooser.events.SelectionChangedListener() {
-    public void onSelectionChange(datechooser.events.SelectionChangedEvent evt) {
-        finalDateChooserBoxOnSelectionChange(evt);
-    }
-    });
-    finalDateChooserBox.addCommitListener(new datechooser.events.CommitListener() {
-        public void onCommit(datechooser.events.CommitEvent evt) {
-            finalDateChooserBoxOnCommit(evt);
-        }
-    });
 
-    timeGapPrdBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Последний день", "Последний месяц", "Все время", "Вручную" }));
-    timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            timeGapPrdBoxActionPerformed(evt);
-        }
+timeGapPrdBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Последний день", "Последний месяц", "Все время", "Вручную" }));
+timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+        timeGapPrdBoxActionPerformed(evt);
+    }
     });
 
     showDataBtn.setBackground(new java.awt.Color(255, 255, 255));
     showDataBtn.setText("Показать");
     showDataBtn.setEnabled(false);
+    showDataBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            showDataBtnActionPerformed(evt);
+        }
+    });
 
     javax.swing.GroupLayout datePanelLayout = new javax.swing.GroupLayout(datePanel);
     datePanel.setLayout(datePanelLayout);
@@ -515,21 +511,17 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
         } catch (SQLException ex) {Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);}
     }//GEN-LAST:event_timeGapPrdBoxActionPerformed
 
-    private void startDateChooserBoxOnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_startDateChooserBoxOnCommit
-
-    }//GEN-LAST:event_startDateChooserBoxOnCommit
-
-    private void finalDateChooserBoxOnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_finalDateChooserBoxOnCommit
-
-    }//GEN-LAST:event_finalDateChooserBoxOnCommit
-
-    private void finalDateChooserBoxOnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_finalDateChooserBoxOnSelectionChange
-
-    }//GEN-LAST:event_finalDateChooserBoxOnSelectionChange
-
-    private void startDateChooserBoxOnSelectionChange(datechooser.events.SelectionChangedEvent evt) {//GEN-FIRST:event_startDateChooserBoxOnSelectionChange
-
-    }//GEN-LAST:event_startDateChooserBoxOnSelectionChange
+    private void showDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataBtnActionPerformed
+        startDateCldr = (GregorianCalendar) startDateChooserBox.getSelectedDate();
+        startDateCldr = homebudget.HomeBudget.setHourZero(startDateCldr);
+        finalDateCldr = (GregorianCalendar) finalDateChooserBox.getSelectedDate();
+        try {
+            isQuerydata = true;
+            updateData();
+        } catch (SQLException ex) {
+            Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_showDataBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;

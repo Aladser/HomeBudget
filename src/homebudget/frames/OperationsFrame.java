@@ -22,6 +22,7 @@ public class OperationsFrame extends JDialog {
     
     public OperationsFrame(Frame parent, HomeBudget launcher, boolean modal, int type) {
         super(parent, modal);
+        this.launcher = launcher;
         this.parent = (TrsctFrame) parent;
         this.type = type;
         initComponents();

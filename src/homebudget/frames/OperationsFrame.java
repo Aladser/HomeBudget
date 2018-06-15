@@ -26,8 +26,9 @@ public class OperationsFrame extends JDialog {
         this.parent = (TrsctFrame) parent;
         this.type = type;
         initComponents();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screenSize.width - getWidth())/2, (screenSize.height - getHeight())/2);
+        int x =  parent.getX() + (parent.getWidth() - getWidth())/2;
+        int y =  parent.getY() + (parent.getHeight() - getHeight())/2;
+        setLocation(x, y);
         getContentPane().setBackground(Color.white);
         typeOprtTypeComboBox.setBackground(Color.white);
         // иконки

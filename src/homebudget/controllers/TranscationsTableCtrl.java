@@ -4,9 +4,9 @@ import homebudget.models.DBConnection;
 import homebudget.models.TransactionsTableLine;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /** Контроллер таблицы БД */
@@ -77,6 +77,58 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         }
         return rslt;        
     }
+    
+    /** Общий доход за указанное врем
+     * @param startDate
+     * @param finalDate
+     * @return */
+    public double getTotalIncome(Date startDate, Date finalDate){
+        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=1 AND date>";
+        query += startDate.getTime()+" AND date<"+finalDate.getTime();
+        return mGetTotalIncome();
+    }
+    /** Общий доход
+     * @return */
+    public double getTotalIncome(){
+        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=1";
+        return mGetTotalIncome();
+    } 
+    public double mGetTotalIncome(){
+        resSet = executeQuery(query);
+        try {        
+            return resSet.getDouble("val");
+        } catch (SQLException ex) {
+            Logger.getLogger(TranscationsTableCtrl.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
+        }
+        return -1;
+    }    
+
+    /** Общий доход за указанное врем
+     * @param startDate
+     * @param finalDate
+     * @return */
+    public double getTotalExpense(Date startDate, Date finalDate){
+        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=-1 AND date>";
+        query += startDate.getTime()+" AND date<"+finalDate.getTime();
+        return mGetTotalIncome();
+    }
+    /** Общий доход
+     * @return */
+    public double getTotalExpense(){
+        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=-1";
+        return mGetTotalIncome();
+    } 
+    public double mGetTotalExpense(){
+        resSet = executeQuery(query);
+        try {        
+            return resSet.getDouble("val");
+        } catch (SQLException ex) {
+            Logger.getLogger(TranscationsTableCtrl.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
+        }
+        return -1;
+    }       
     
     /** баланс
      * @return 

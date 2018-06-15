@@ -4,6 +4,7 @@ import homebudget.frames.TrsctFrame;
 import homebudget.models.DBControl;
 import homebudget.controllers.OperationsTableCtrl;
 import homebudget.controllers.TranscationsTableCtrl;
+import java.awt.AWTException;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.io.File;
@@ -65,10 +66,10 @@ public class HomeBudget {
         HomeBudget launcher = new HomeBudget();
         EventQueue.invokeLater(() -> {try {
             new TrsctFrame(launcher).setVisible(true);
-            } catch (SQLException ex) {
+            } catch (SQLException | AWTException ex) {
                 Logger.getLogger(HomeBudget.class.getName()).log(Level.SEVERE, null, ex);
             }
-});        
+        });        
     }
     
 }

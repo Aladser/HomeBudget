@@ -92,6 +92,7 @@ public class TrsctFrame extends javax.swing.JFrame {
             isQuerydata = false;
             return;
         }
+        showDataBtn.setEnabled(false);
         // выбор ручного ввода даты
         if(choicePar == 3 && !isQuerydata){
             startDateChooserBox.setMinDate(FIRST_DATE_RECORD);

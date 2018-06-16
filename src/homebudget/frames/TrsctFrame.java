@@ -521,6 +521,10 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         startDateCldr = (GregorianCalendar) startDateChooserBox.getSelectedDate();
         startDateCldr = homebudget.HomeBudget.setHourZero(startDateCldr);
         finalDateCldr = (GregorianCalendar) finalDateChooserBox.getSelectedDate();
+        long time = finalDateCldr.getTimeInMillis();
+        time += +86400000;
+        finalDateCldr.setTime(new Date(time));        
+        finalDateCldr = homebudget.HomeBudget.setHourZero(finalDateCldr);
         try {
             isManualData = true;
             updateData();

@@ -121,6 +121,7 @@ public class TrsctFrame extends javax.swing.JFrame {
             startDateChooserBox.setSelectedDate(startDateCldr);
             lockDateChoice(true);            
         }
+        else lockDateChoice(false);
         // обновление данных
         table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDateCldr, finalDateCldr)));
         incValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalIncome(startDateCldr, finalDateCldr))+" P");

@@ -6,7 +6,10 @@ import homebudget.controllers.OperationsTableCtrl;
 import homebudget.controllers.TranscationsTableCtrl;
 import java.awt.AWTException;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -17,10 +20,12 @@ import javax.swing.JOptionPane;
 public class HomeBudget {
     public final TranscationsTableCtrl TRSCTS;
     public final OperationsTableCtrl OPRTS;
+    public static Font DIGITAL_FONT;
     
     public HomeBudget(){
         TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
         OPRTS = (OperationsTableCtrl) getDB().getTable(1);
+        DIGITAL_FONT = createDigitalFont();
     }
     
     // проверяет наличие БД 
@@ -77,6 +82,21 @@ public class HomeBudget {
         else rslt += fraction;
         
         return rslt;
+    }
+    
+    // загружает цифровой шрифт
+    private Font createDigitalFont(){
+        try {
+            return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("digital.ttf"));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Файл шрифтов digital.ttf не найден!. Будет использован стандартный шрифт."
+            );
+            return new Font("Consolas", java.awt.Font.PLAIN, 15);
+        } catch (FontFormatException e) {
+            JOptionPane.showMessageDialog(null, "Не удалось установить шрифт digital.ttf!. Будет использован стандартный шрифт."
+            );
+            return new Font("Consolas", Font.PLAIN, 15);
+        }
     }
     
     public static void main(String[] args) {

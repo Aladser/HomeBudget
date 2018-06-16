@@ -28,7 +28,7 @@ public class TsctTableCellRender extends DefaultTableCellRenderer{
             text = "   " + (String)value;
         else if(value.getClass() == Double.class){
             text = ((double)value)>0 ? "+" : "";
-            text += HomeBudget.formatMoney((double)value) + " \u0584";
+            text += HomeBudget.formatMoney((double)value) + " P";
         }
         else
             text = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss   ").format(new Date((long) value));

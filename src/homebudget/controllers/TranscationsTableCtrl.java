@@ -4,6 +4,7 @@ import homebudget.models.DBConnection;
 import homebudget.models.TransactionsTableLine;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -21,9 +22,13 @@ public class TranscationsTableCtrl extends DBTableCtrl{
     /** Получить дату первой записи
      * @return 
      * @throws java.sql.SQLException */
-    public Date getFirstRecordDate() throws SQLException{
+    public GregorianCalendar getFirstRecordDate() throws SQLException{
         query = "SELECT MIN(date) val FROM "+ dbName;
-        return new Date(executeQuery(query).getLong("val"));
+        long time = executeQuery(query).getLong("val");
+        GregorianCalendar rslt = new GregorianCalendar();
+        rslt.setTimeInMillis(time);
+        rslt = homebudget.HomeBudget.setHourZero(rslt);
+        return rslt;
     }
     
     /**
@@ -45,22 +50,16 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         query = "DELETE FROM "+dbName+" WHERE date=(SELECT MAX(date) FROM transactions)";
         executeQueryNoRes(query);
     }
-    
-    public ArrayList<TransactionsTableLine> getData(GregorianCalendar startDate, GregorianCalendar finalDate){
-        query = "SELECT name, value*type value, date FROM "+dbName+" WHERE date";
-        query += ">"+startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();
-        return mGetData();
-    }
-    public ArrayList<TransactionsTableLine> getData(){
-        query = "SELECT name, value*type value, date FROM "+dbName;
-        return mGetData();
-    }    
-    
+
     /**
      * Получение таблицы за указанный промежуток времени
+     * @param startDate
+     * @param finalDate
      * @return 
      */
-    public ArrayList<TransactionsTableLine> mGetData(){
+    public ArrayList<TransactionsTableLine> getData(GregorianCalendar startDate, GregorianCalendar finalDate){
+        query = "SELECT name, value*type value, date FROM "+dbName+" WHERE date";
+        query += ">"+startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();        
         query += " ORDER BY date DESC";
         resSet = executeQuery(query);
         ArrayList<TransactionsTableLine> rslt = new ArrayList<>();
@@ -89,12 +88,6 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         query += startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();
         return mGetTotalIncome();
     }
-    /** Общий доход
-     * @return */
-    public double getTotalIncome(){
-        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=1";
-        return mGetTotalIncome();
-    } 
     public double mGetTotalIncome(){
         resSet = executeQuery(query);
         try {        
@@ -113,12 +106,6 @@ public class TranscationsTableCtrl extends DBTableCtrl{
     public double getTotalExpense(GregorianCalendar startDate, GregorianCalendar finalDate){
         query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=-1 AND date>";
         query += startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();
-        return mGetTotalIncome();
-    }
-    /** Общий доход
-     * @return */
-    public double getTotalExpense(){
-        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=-1";
         return mGetTotalIncome();
     } 
     public double mGetTotalExpense(){

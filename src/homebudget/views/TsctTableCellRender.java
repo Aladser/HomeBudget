@@ -23,32 +23,33 @@ public class TsctTableCellRender extends DefaultTableCellRenderer{
     {
         
         // Содержание JLabel    
-        String text = null;
-        if(value.getClass() == String.class) text = "   " + (String)value;
+        String text;
+        if(value.getClass() == String.class) 
+            text = "   " + (String)value;
         else if(value.getClass() == Double.class){
-            if((double)value != 0)
-                text = HomeBudget.formatMoney((double)value) + " \u0584   ";
-            else
-                text = "0 \u0584   ";
+            text = ((double)value)>0 ? "+" : "";
+            text += HomeBudget.formatMoney((double)value) + " \u0584";
         }
-        else{
-            Date d = (Date)value;
-            text = new SimpleDateFormat("dd.MM.yyyy").format(d) + " г.";
-            
-        }
-        
+        else
+            text = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss   ").format(new Date((long) value));
         JLabel cell = new JLabel(text);
-        cell.setFont(new Font("Arial", 0, 14));
-        
-        if (column == 1){
-            if((double)value>0) cell.setForeground(Color.green);
-            else if ((double)value<0) cell.setForeground(Color.red);
-            else cell.setForeground(Color.black);
+        // cell-рендер
+        switch (column) {
+            case 0:
+                cell.setHorizontalAlignment(SwingConstants.LEFT);
+                cell.setFont(new Font("Times New Roman", 0, 18));
+                break;
+            case 1:
+                if((double)value>0) cell.setForeground(Color.green);
+                else if ((double)value<0) cell.setForeground(Color.red);
+                else cell.setForeground(Color.black);
+                cell.setHorizontalAlignment(SwingConstants.CENTER);
+                cell.setFont(new Font("Digital-7 Mono", 0, 18));
+                break;
+            default:
+                cell.setHorizontalAlignment(SwingConstants.CENTER);
+                cell.setFont(new Font("Times New Roman", 0, 18));
         }
-        // выравнивание первой колонки
-        if(column == 1)
-            cell.setHorizontalAlignment(SwingConstants.RIGHT);
-        cell.setFont(new java.awt.Font("Arial", 0, 20));
         return cell;
     }
 }

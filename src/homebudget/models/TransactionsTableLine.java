@@ -1,10 +1,9 @@
 package homebudget.models;
 
-import java.util.Date;
-
 public class TransactionsTableLine {
     public String name;                     
     public double value;
+    public long date;
  
     /**
      * Строка таблицы игр
@@ -16,6 +15,7 @@ public class TransactionsTableLine {
     public TransactionsTableLine(String n, double v, int st, long lDate){
         name = n;
         value = v*st;
+        date = lDate;
     }
     
     /** создает пустую строку таблицы игр */

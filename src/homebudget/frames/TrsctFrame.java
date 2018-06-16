@@ -115,16 +115,17 @@ public class TrsctFrame extends javax.swing.JFrame {
         // рендер таблицы
         if( choicePar == 2 ){
             table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData()));
-            incValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalIncome())+" Р");
-            expValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalExpense())+" Р");
+            incValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalIncome())+" P");
+            expValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalExpense())+" P");
         }
         else{
             table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDate, LAST_DATE_RECORD)));
-            incValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalIncome(startDate, LAST_DATE_RECORD))+" Р");
-            expValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalExpense(startDate, LAST_DATE_RECORD))+" Р");
+            incValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalIncome(startDate, LAST_DATE_RECORD))+" P");
+            expValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalExpense(startDate, LAST_DATE_RECORD))+" P");
         }
         table.getColumnModel().getColumn(0).setCellRenderer( new TsctTableCellRender() );
         table.getColumnModel().getColumn(1).setCellRenderer( new TsctTableCellRender() );
+        table.getColumnModel().getColumn(2).setCellRenderer( new TsctTableCellRender() );
         // баланс
         balanceFld.setText(HomeBudget.formatMoney(launcher.TRSCTS.getBalance())+" P");
     }
@@ -171,11 +172,11 @@ public class TrsctFrame extends javax.swing.JFrame {
         topPanel.setBackground(new java.awt.Color(255, 255, 255));
         topPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        balanceLbl.setFont(new java.awt.Font("Arial", 0, 40)); // NOI18N
+        balanceLbl.setFont(new java.awt.Font("Times New Roman", 0, 40)); // NOI18N
         balanceLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        balanceLbl.setText("Баланс");
+        balanceLbl.setText(" Баланс");
 
-        balanceFld.setFont(new java.awt.Font("Arial", 0, 50)); // NOI18N
+        balanceFld.setFont(new java.awt.Font("Digital-7 Mono", 0, 55)); // NOI18N
         balanceFld.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         inputSumFld.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -330,15 +331,15 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         }
     });
 
-    jLabel1.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
+    jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
     jLabel1.setText("Доход");
 
-    incValLbl.setFont(new java.awt.Font("Arial", 0, 30)); // NOI18N
+    incValLbl.setFont(new java.awt.Font("Digital-7 Mono", 0, 35)); // NOI18N
 
-    jLabel3.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
+    jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
     jLabel3.setText("Расход");
 
-    expValLbl.setFont(new java.awt.Font("Arial", 0, 30)); // NOI18N
+    expValLbl.setFont(new java.awt.Font("Digital-7 Mono", 0, 35)); // NOI18N
 
     javax.swing.GroupLayout datePanelLayout = new javax.swing.GroupLayout(datePanel);
     datePanel.setLayout(datePanelLayout);
@@ -371,9 +372,9 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
                     .addComponent(finalDateChooserBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(datePanelLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(datePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(incValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(datePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                        .addComponent(incValLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(datePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(datePanelLayout.createSequentialGroup()
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -382,9 +383,9 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
                     .addComponent(showDataBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(datePanelLayout.createSequentialGroup()
                     .addGap(21, 21, 21)
-                    .addGroup(datePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(expValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(datePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                        .addComponent(expValLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
@@ -418,10 +419,10 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
                 .addGroup(topPanelLayout.createSequentialGroup()
                     .addComponent(datePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(balanceFld, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(balanceLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))))
-            .addContainerGap(85, Short.MAX_VALUE))
+                        .addComponent(balanceLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))))
+            .addContainerGap())
     );
     topPanelLayout.setVerticalGroup(
         topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,7 +464,7 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             .addContainerGap()
             .addComponent(topPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+            .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
             .addContainerGap())
     );
 

@@ -1,6 +1,5 @@
 package homebudget.models;
 
-import homebudget.models.TransactionsTableLine;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,16 +21,24 @@ public class TransactionsTableModel implements TableModel{
     public int getRowCount() {return lines.size();}
 
     @Override
-    public int getColumnCount() {return 2;}
+    public int getColumnCount() {return 3;}
 
     @Override
-    public String getColumnName(int index){ 
-        return index==0 ? "Операция" : "Сумма"; 
+    public String getColumnName(int index){
+        switch(index){
+            case 0: return "Операция";
+            case 1: return "Сумма";
+            default: return "Дата операции";
+        } 
     }
 
     @Override
-    public Class<?> getColumnClass(int index) { 
-        return index==0 ? String.class : Double.class;
+    public Class<?> getColumnClass(int index) {
+        switch(index){
+            case 0: return String.class;
+            case 1: return Double.class;
+            default: return Long.class;
+        } 
     }
 
     @Override
@@ -40,7 +47,11 @@ public class TransactionsTableModel implements TableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         TransactionsTableLine data = lines.get(rowIndex);
-        return columnIndex==0 ? data.name : data.value; 
+        switch(columnIndex){
+            case 0: return data.name;
+            case 1: return data.value;
+            default: return data.date;
+        } 
     }
 
     @Override

@@ -43,7 +43,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="topPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="tableScrollPane" pref="332" max="32767" attributes="0"/>
+              <Component id="tableScrollPane" pref="419" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -105,13 +105,13 @@
                       <Group type="102" attributes="0">
                           <Component id="datePanel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="balanceFld" max="32767" attributes="0"/>
-                              <Component id="balanceLbl" pref="300" max="32767" attributes="0"/>
+                              <Component id="balanceLbl" pref="430" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="85" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -148,16 +148,16 @@
         <Component class="javax.swing.JLabel" name="balanceLbl">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial" size="40" style="0"/>
+              <Font name="Times New Roman" size="40" style="0"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="&#x411;&#x430;&#x43b;&#x430;&#x43d;&#x441;"/>
+            <Property name="text" type="java.lang.String" value=" &#x411;&#x430;&#x43b;&#x430;&#x43d;&#x441;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="balanceFld">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Arial" size="50" style="0"/>
+              <Font name="Digital-7 Mono" size="55" style="0"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
           </Properties>
@@ -266,9 +266,9 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="incValLbl" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="jLabel1" min="-2" pref="40" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLabel1" pref="40" max="32767" attributes="0"/>
+                                  <Component id="incValLbl" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -281,9 +281,9 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="expValLbl" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="jLabel3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLabel3" pref="40" max="32767" attributes="0"/>
+                                  <Component id="expValLbl" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -369,7 +369,7 @@
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Arial" size="20" style="0"/>
+                  <Font name="Times New Roman" size="20" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x414;&#x43e;&#x445;&#x43e;&#x434;"/>
               </Properties>
@@ -377,14 +377,14 @@
             <Component class="javax.swing.JLabel" name="incValLbl">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Arial" size="30" style="0"/>
+                  <Font name="Digital-7 Mono" size="35" style="0"/>
                 </Property>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel3">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Arial" size="20" style="0"/>
+                  <Font name="Times New Roman" size="20" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x420;&#x430;&#x441;&#x445;&#x43e;&#x434;"/>
               </Properties>
@@ -392,7 +392,7 @@
             <Component class="javax.swing.JLabel" name="expValLbl">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Arial" size="30" style="0"/>
+                  <Font name="Digital-7 Mono" size="35" style="0"/>
                 </Property>
               </Properties>
             </Component>

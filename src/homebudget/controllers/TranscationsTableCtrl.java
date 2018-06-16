@@ -47,12 +47,12 @@ public class TranscationsTableCtrl extends DBTableCtrl{
     }
     
     public ArrayList<TransactionsTableLine> getData(GregorianCalendar startDate, GregorianCalendar finalDate){
-        query = "SELECT name, SUM(value*type) value, date FROM "+dbName+" WHERE date";
+        query = "SELECT name, value*type value, date FROM "+dbName+" WHERE date";
         query += ">"+startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();
         return mGetData();
     }
     public ArrayList<TransactionsTableLine> getData(){
-        query = "SELECT name, SUM(value*type) value, date FROM "+dbName;
+        query = "SELECT name, value*type value, date FROM "+dbName;
         return mGetData();
     }    
     
@@ -61,7 +61,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
      * @return 
      */
     public ArrayList<TransactionsTableLine> mGetData(){
-        query += " GROUP BY name ORDER BY value DESC";
+        query += " ORDER BY date DESC";
         resSet = executeQuery(query);
         ArrayList<TransactionsTableLine> rslt = new ArrayList<>();
         TransactionsTableLine line;
@@ -70,6 +70,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
                 line = new TransactionsTableLine();
                 line.name = resSet.getString("name");
                 line.value = resSet.getDouble("value");
+                line.date = resSet.getLong("date");
                 rslt.add(line);
             }
         } catch (SQLException ex) {

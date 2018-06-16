@@ -6,11 +6,9 @@ import homebudget.controllers.OperationsTableCtrl;
 import homebudget.controllers.TranscationsTableCtrl;
 import java.awt.AWTException;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,12 +17,10 @@ import javax.swing.JOptionPane;
 public class HomeBudget {
     public final TranscationsTableCtrl TRSCTS;
     public final OperationsTableCtrl OPRTS;
-    public final Font DIGITAL_FONT;
     
     public HomeBudget(){
         TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
         OPRTS = (OperationsTableCtrl) getDB().getTable(1);
-        DIGITAL_FONT = createDigitalFont();
     }
     
     // проверяет наличие БД 
@@ -35,21 +31,6 @@ public class HomeBudget {
             System.exit(42);
         }
         return new DBControl(DB_PATH);
-    }
-
-    // загружает цифровой шрифт
-    private Font createDigitalFont(){
-        try {
-            return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("digital.ttf"));
-        } catch (java.io.IOException ex) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Файл шрифтов digital.ttf не найден!. Будет использован стандартный шрифт."
-            );
-            return new Font("Consolas", java.awt.Font.PLAIN, 15);
-        } catch (java.awt.FontFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Не удалось установить шрифт digital.ttf!. Будет использован стандартный шрифт."
-            );
-            return new Font("Consolas", Font.PLAIN, 15);
-        }
     }
     
     /** Обнулить часы даты
@@ -63,8 +44,42 @@ public class HomeBudget {
         return cldr;
     }
     
-    public static void main(String[] args) {
+    /**
+     * Денежный формат
+     * @param src 
+     * @return  
+     */
+    public static String formatMoney(double src){
+        // округление
+        int intSrc = (int)(src*100);
+        src = ((double)intSrc)/100;
+        // число как строка
+        String strNumber = Integer.toString((int)src);
+        char[] charNumber = strNumber.toCharArray();
+        // если разрядность меньше 4
+        if(strNumber.length() < 4) return Double.toString(src);
+        String rslt = "";
+        // шапка числа
+        int numberHeader = strNumber.length()%3;
+        int i=0;
+        for(; i<numberHeader; i++) rslt+= charNumber[i];
+        if(numberHeader != 0) rslt+=" ";
+        // заполенние целой части числа
+        while(i<strNumber.length()){
+            for(int j=0; j<3; j++) rslt+=charNumber[i++];
+            if(i!=strNumber.length())rslt+=" ";
+        }
+        // дробная часть
+        rslt+=".";
+        int fraction = (int) (Math.round(src*100) - (int)src*100);
+        if(fraction == 0) rslt += "00";
+        else if(fraction < 10) rslt += "0"+fraction;
+        else rslt += fraction;
         
+        return rslt;
+    }
+    
+    public static void main(String[] args) {
         EventQueue.invokeLater(() -> {try {
             new TrsctFrame(new HomeBudget()).setVisible(true);
             } catch (SQLException | AWTException ex) {

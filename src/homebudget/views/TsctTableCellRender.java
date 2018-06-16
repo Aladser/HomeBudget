@@ -1,5 +1,6 @@
 package homebudget.views;
 
+import homebudget.HomeBudget;
 import java.awt.Color;
 import java.awt.Font;
 import java.text.SimpleDateFormat;
@@ -26,9 +27,9 @@ public class TsctTableCellRender extends DefaultTableCellRenderer{
         if(value.getClass() == String.class) text = "   " + (String)value;
         else if(value.getClass() == Double.class){
             if((double)value != 0)
-                text = Double.toString((double)value) + " \u0584";
+                text = HomeBudget.formatMoney((double)value) + " \u0584   ";
             else
-                text = "0 \u0584";
+                text = "0 \u0584   ";
         }
         else{
             Date d = (Date)value;
@@ -45,7 +46,9 @@ public class TsctTableCellRender extends DefaultTableCellRenderer{
             else cell.setForeground(Color.black);
         }
         // выравнивание первой колонки
-        if(column != 0)  cell.setHorizontalAlignment(SwingConstants.CENTER);
+        if(column == 1)
+            cell.setHorizontalAlignment(SwingConstants.RIGHT);
+        cell.setFont(new java.awt.Font("Arial", 0, 20));
         return cell;
     }
 }

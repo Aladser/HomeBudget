@@ -42,6 +42,7 @@ public class TrsctFrame extends javax.swing.JFrame {
     }
     
     public TrsctFrame(homebudget.HomeBudget launcher) throws SQLException, AWTException {
+        
         this.launcher = launcher;
         // инициализация крайних дат
         FIRST_DATE_RECORD = launcher.TRSCTS.getFirstRecordDate();
@@ -82,6 +83,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         finalDateChooserBox.setMaxDate(LAST_DATE_RECORD);
         startDateChooserBox.setMaxDate(LAST_DATE_RECORD);
         updateData();
+        table.requestFocus();
     }
    
     // модель choiceOprtComboBox

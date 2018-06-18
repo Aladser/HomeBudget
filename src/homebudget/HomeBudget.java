@@ -42,10 +42,21 @@ public class HomeBudget {
      * @param cldr
      * @return  */
     public static GregorianCalendar setHourZero(GregorianCalendar cldr){
-        cldr.set(Calendar.HOUR_OF_DAY, 0);
-        cldr.set(Calendar.MINUTE, 0);
-        cldr.set(Calendar.SECOND, 0);
-        cldr.set(Calendar.MILLISECOND, 0);
+        GregorianCalendar rslt = new GregorianCalendar();
+        rslt.setTime(cldr.getTime());
+        rslt.set(Calendar.HOUR_OF_DAY, 0);
+        rslt.set(Calendar.MINUTE, 0);
+        rslt.set(Calendar.SECOND, 0);
+        rslt.set(Calendar.MILLISECOND, 0);
+        return rslt;
+    }
+    
+    /** коррекция finalDate
+     * @param cldr
+     * @return  */
+    public static GregorianCalendar setFinalDate(GregorianCalendar cldr){
+        GregorianCalendar rslt = setHourZero(cldr);
+        rslt.setTimeInMillis(rslt.getTimeInMillis()+86400000);
         return cldr;
     }
     

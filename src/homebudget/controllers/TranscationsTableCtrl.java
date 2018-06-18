@@ -4,7 +4,6 @@ import homebudget.models.DBConnection;
 import homebudget.models.TransactionsTableLine;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -59,7 +58,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
      */
     public ArrayList<TransactionsTableLine> getData(GregorianCalendar startDate, GregorianCalendar finalDate){
         query = "SELECT name, value*type value, date FROM "+dbName+" WHERE date";
-        query += ">"+startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();        
+        query += ">="+startDate.getTimeInMillis()+" AND date<="+finalDate.getTimeInMillis();        
         query += " ORDER BY date DESC";
         resSet = executeQuery(query);
         ArrayList<TransactionsTableLine> rslt = new ArrayList<>();
@@ -84,31 +83,25 @@ public class TranscationsTableCtrl extends DBTableCtrl{
      * @param finalDate
      * @return */
     public double getTotalIncome(GregorianCalendar startDate, GregorianCalendar finalDate){
-        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=1 AND date>";
-        query += startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();
-        return mGetTotalIncome();
-    }
-    public double mGetTotalIncome(){
+        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=1 AND date>=";
+        query += startDate.getTimeInMillis()+" AND date<="+finalDate.getTimeInMillis();
         resSet = executeQuery(query);
         try {        
             return resSet.getDouble("val");
         } catch (SQLException ex) {
             Logger.getLogger(TranscationsTableCtrl.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
-        }
+        }        
         return -1;
-    }    
+    }   
 
     /** Общий доход за указанное врем
      * @param startDate
      * @param finalDate
      * @return */
     public double getTotalExpense(GregorianCalendar startDate, GregorianCalendar finalDate){
-        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=-1 AND date>";
-        query += startDate.getTimeInMillis()+" AND date<"+finalDate.getTimeInMillis();
-        return mGetTotalIncome();
-    } 
-    public double mGetTotalExpense(){
+        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=-1 AND date>=";
+        query += startDate.getTimeInMillis()+" AND date<="+finalDate.getTimeInMillis();
         resSet = executeQuery(query);
         try {        
             return resSet.getDouble("val");
@@ -117,9 +110,9 @@ public class TranscationsTableCtrl extends DBTableCtrl{
             System.exit(0);
         }
         return -1;
-    }       
+    } 
     
-    /** баланс
+    /** Баланс
      * @return 
      * @throws java.sql.SQLException */
     public double getBalance() throws SQLException{

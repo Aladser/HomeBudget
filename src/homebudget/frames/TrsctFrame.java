@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,11 @@ public class TrsctFrame extends javax.swing.JFrame {
     boolean isManualData = false;
     /** кэш ввода суммы */
     String chashNumberInput = "";
+    /** размеры  окна */
+    final int F_WIDTH = 984;
+    final int F_HEIGHT = 715;
+    final int xCenter;
+    //final int yCenter;
 
     public TrsctFrame(HomeBudget launcher) throws SQLException, AWTException {
         this.launcher = launcher;
@@ -41,6 +47,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         getContentPane().setBackground(Color.white);
         setIconImage( new ImageIcon( getClass().getResource("images/logo.png") ).getImage() );
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        xCenter = (screenSize.width - getWidth())/2;
         setBounds((screenSize.width - getWidth())/2, 0, getWidth(), screenSize.height-50);
         table.requestFocus();
         startDateChooserBox.setFormat(1);
@@ -136,6 +143,11 @@ public class TrsctFrame extends javax.swing.JFrame {
         setTitle("Домашний бюджет 2.1");
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
 
         tableScrollPane.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -290,7 +302,7 @@ finalDateChooserBox.setCalendarBackground(new java.awt.Color(255, 255, 255));
 finalDateChooserBox.setFieldFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
 finalDateChooserBox.setNavigateFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
 
-timeGapPrdBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Последний день", "Последний месяц", "Все время", "Вручную" }));
+timeGapPrdBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Последний день", "Последняя неделя", "Последний месяц", "Все время", "Вручную" }));
 timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
     public void actionPerformed(java.awt.event.ActionEvent evt) {
         timeGapPrdBoxActionPerformed(evt);
@@ -458,7 +470,7 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             try{
                 Double.parseDouble(inputSumFld.getText());
                 chashNumberInput = inputSumFld.getText();
-            }catch(java.lang.NumberFormatException exc){
+            }catch(java.lang.NumberFormatException e){
                 inputSumFld.setText(chashNumberInput);
             }
         }
@@ -501,9 +513,13 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
                 break;
             case 1:
                 startDate = HomeBudget.setHourZero(new GregorianCalendar());
-                startDate.set(Calendar.DAY_OF_MONTH, 1);
+                startDate.setTimeInMillis(startDate.getTimeInMillis()-86400000*7);
                 break;
             case 2:
+                startDate = HomeBudget.setHourZero(new GregorianCalendar());
+                startDate.set(Calendar.DAY_OF_MONTH, 1);
+                break;
+            case 3:
                 startDate = FIRST_DATE_RECORD;
                 break;
             default:
@@ -524,9 +540,6 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
     private void showDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataBtnActionPerformed
         GregorianCalendar startDate = (GregorianCalendar) startDateChooserBox.getSelectedDate();
         GregorianCalendar finalDate = (GregorianCalendar) finalDateChooserBox.getSelectedDate();
-        startDate = HomeBudget.setHourZero(startDate);
-        finalDate = HomeBudget.setHourZero(finalDate);
-        finalDate.setTimeInMillis(finalDate.getTimeInMillis()+86400000);
         isManualData = true;
         updateData(startDate, finalDate);
     }//GEN-LAST:event_showDataBtnActionPerformed
@@ -534,11 +547,18 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
     private void startDateChooserBoxOnCommit(datechooser.events.CommitEvent evt) {//GEN-FIRST:event_startDateChooserBoxOnCommit
         GregorianCalendar startDate = (GregorianCalendar) startDateChooserBox.getSelectedDate();
         GregorianCalendar finalDate = (GregorianCalendar) finalDateChooserBox.getSelectedDate();
+        
         if(startDate.getTimeInMillis() > finalDate.getTimeInMillis()){
             finalDate.setTimeInMillis(startDate.getTimeInMillis());
             finalDateChooserBox.setSelectedDate(startDate);
         }
     }//GEN-LAST:event_startDateChooserBoxOnCommit
+
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+       Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        if((evt.getNewState() & WindowEvent.WINDOW_ICONIFIED) !=0)
+            setBounds(xCenter, 0, F_WIDTH , (int) screenSize.getHeight());
+    }//GEN-LAST:event_formWindowStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;

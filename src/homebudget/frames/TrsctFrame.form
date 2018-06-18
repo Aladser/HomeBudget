@@ -13,6 +13,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowStateChanged" listener="java.awt.event.WindowStateListener" parameters="java.awt.event.WindowEvent" handler="formWindowStateChanged"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -336,11 +339,12 @@
             <Component class="javax.swing.JComboBox" name="timeGapPrdBox">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
+                  <StringArray count="5">
                     <StringItem index="0" value="&#x41f;&#x43e;&#x441;&#x43b;&#x435;&#x434;&#x43d;&#x438;&#x439; &#x434;&#x435;&#x43d;&#x44c;"/>
-                    <StringItem index="1" value="&#x41f;&#x43e;&#x441;&#x43b;&#x435;&#x434;&#x43d;&#x438;&#x439; &#x43c;&#x435;&#x441;&#x44f;&#x446;"/>
-                    <StringItem index="2" value="&#x412;&#x441;&#x435; &#x432;&#x440;&#x435;&#x43c;&#x44f;"/>
-                    <StringItem index="3" value="&#x412;&#x440;&#x443;&#x447;&#x43d;&#x443;&#x44e;"/>
+                    <StringItem index="1" value="&#x41f;&#x43e;&#x441;&#x43b;&#x435;&#x434;&#x43d;&#x44f;&#x44f; &#x43d;&#x435;&#x434;&#x435;&#x43b;&#x44f;"/>
+                    <StringItem index="2" value="&#x41f;&#x43e;&#x441;&#x43b;&#x435;&#x434;&#x43d;&#x438;&#x439; &#x43c;&#x435;&#x441;&#x44f;&#x446;"/>
+                    <StringItem index="3" value="&#x412;&#x441;&#x435; &#x432;&#x440;&#x435;&#x43c;&#x44f;"/>
+                    <StringItem index="4" value="&#x412;&#x440;&#x443;&#x447;&#x43d;&#x443;&#x44e;"/>
                   </StringArray>
                 </Property>
               </Properties>

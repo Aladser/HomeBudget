@@ -242,7 +242,6 @@ public class TrsctFrame extends javax.swing.JFrame {
                 (datechooser.view.BackRenderer)null,
                 false,
                 true)));
-    startDateChooserBox.setLocked(true);
     startDateChooserBox.setNothingAllowed(false);
     startDateChooserBox.setFormat(1);
     startDateChooserBox.setCalendarBackground(new java.awt.Color(255, 255, 255));
@@ -530,7 +529,15 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         }
         startDateChooserBox.setLocked(false);
         finalDateChooserBox.setLocked(false);
+        long lLimit = startDate.getTimeInMillis() - 1;
+        GregorianCalendar limit = new GregorianCalendar();
+        limit.setTimeInMillis(lLimit);
+        startDateChooserBox.setMinDate(limit);
         startDateChooserBox.setSelectedDate(startDate);
+        limit = new GregorianCalendar();
+        lLimit = new GregorianCalendar().getTimeInMillis()+1;
+        limit.setTimeInMillis(lLimit);
+        finalDateChooserBox.setMaxDate(limit);
         finalDateChooserBox.setSelectedDate(new GregorianCalendar());
         startDateChooserBox.setLocked(true);
         finalDateChooserBox.setLocked(true);

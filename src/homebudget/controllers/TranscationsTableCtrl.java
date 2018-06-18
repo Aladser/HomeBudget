@@ -45,7 +45,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         executeQueryNoRes(query);
     }
     
-    public void clearTable(){
+    public void removeLast(){
         query = "DELETE FROM "+dbName+" WHERE date=(SELECT MAX(date) FROM transactions)";
         executeQueryNoRes(query);
     }

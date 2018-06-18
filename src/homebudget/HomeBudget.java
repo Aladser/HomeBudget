@@ -57,7 +57,7 @@ public class HomeBudget {
     public static GregorianCalendar setFinalDate(GregorianCalendar cldr){
         GregorianCalendar rslt = setHourZero(cldr);
         rslt.setTimeInMillis(rslt.getTimeInMillis()+86400000);
-        return cldr;
+        return rslt;
     }
     
     /**

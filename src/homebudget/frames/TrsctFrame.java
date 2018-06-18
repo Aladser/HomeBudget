@@ -77,7 +77,6 @@ public class TrsctFrame extends javax.swing.JFrame {
         finalDateChooserBox.setMaxDate(HomeBudget.setFinalDate(cldr));
         startDateChooserBox.setMaxDate(HomeBudget.setFinalDate(cldr));
         updateData(cldr, cldr);
-        
     }
    
     // модель choiceOprtComboBox
@@ -92,8 +91,6 @@ public class TrsctFrame extends javax.swing.JFrame {
     private void updateData(GregorianCalendar startDate, GregorianCalendar finalDate){
         startDate = HomeBudget.setHourZero(startDate);
         finalDate = HomeBudget.setFinalDate(finalDate);
-        //System.out.println(startDate.getTime());
-        //System.out.println(finalDate.getTime());
         // таблица
         table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDate, finalDate)));
         table.getColumnModel().getColumn(0).setCellRenderer(tableRender);
@@ -475,15 +472,13 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         launcher.TRSCTS.add(name, value, type);
         inputSumFld.setText("");
         GregorianCalendar startDate = (GregorianCalendar) startDateChooserBox.getSelectedDate();
-        startDate = HomeBudget.setHourZero(startDate);
         GregorianCalendar finalDate = (GregorianCalendar) finalDateChooserBox.getSelectedDate();
         updateData(startDate, finalDate);
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void delBaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBaseBtnActionPerformed
-        launcher.TRSCTS.clearTable();
+        launcher.TRSCTS.removeLast();
         GregorianCalendar startDate = (GregorianCalendar) startDateChooserBox.getSelectedDate();
-        startDate = HomeBudget.setHourZero(startDate);
         GregorianCalendar finalDate = (GregorianCalendar) finalDateChooserBox.getSelectedDate();
         updateData(startDate, finalDate);
     }//GEN-LAST:event_delBaseBtnActionPerformed
@@ -517,14 +512,13 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
                 finalDateChooserBox.setLocked(false);
                 return;
         }
-        GregorianCalendar finalDate = HomeBudget.setFinalDate(new GregorianCalendar());
         startDateChooserBox.setLocked(false);
         finalDateChooserBox.setLocked(false);
         startDateChooserBox.setSelectedDate(startDate);
         finalDateChooserBox.setSelectedDate(new GregorianCalendar());
         startDateChooserBox.setLocked(true);
         finalDateChooserBox.setLocked(true);
-        updateData(startDate, finalDate);
+        updateData(startDate, new GregorianCalendar());
     }//GEN-LAST:event_timeGapPrdBoxActionPerformed
 
     private void showDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataBtnActionPerformed

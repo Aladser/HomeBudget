@@ -66,9 +66,6 @@ public class TrsctFrame extends javax.swing.JFrame {
         expValLbl.setFont(digitalFont);
         incTextLdl.setFont(digitalFont);
         expTextLdl.setFont(digitalFont);
-        Font statiscticFont = HomeBudget.STATISTIC_FONT.deriveFont(Font.PLAIN, 20);
-        incStatFld.setFont(statiscticFont);
-        expStatFld.setFont(statiscticFont);
         // background элементов
         oprtComboBox.setBackground(Color.white);
         typeComboBox.setBackground(Color.white);
@@ -391,10 +388,9 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
     topPanelLayout.setHorizontalGroup(
         topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(topPanelLayout.createSequentialGroup()
+            .addContainerGap()
             .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(datePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(topPanelLayout.createSequentialGroup()
-                    .addContainerGap()
                     .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(inputSumFld, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(topPanelLayout.createSequentialGroup()
@@ -407,7 +403,8 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
                         .addGroup(topPanelLayout.createSequentialGroup()
                             .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(oprtComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(oprtComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addComponent(datePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(18, 18, 18)
             .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(balanceLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -438,13 +435,13 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
-    incStatFld.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+    incStatFld.setFont(new java.awt.Font("Arial Narrow", 0, 20)); // NOI18N
     incStatFld.setForeground(new java.awt.Color(0, 153, 0));
     incStatFld.setMaximumSize(new java.awt.Dimension(2147483647, 10000));
     incStatFld.setMinimumSize(new java.awt.Dimension(6, 500));
     jScrollPane1.setViewportView(incStatFld);
 
-    expStatFld.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+    expStatFld.setFont(new java.awt.Font("Arial Narrow", 0, 20)); // NOI18N
     expStatFld.setForeground(new java.awt.Color(255, 0, 0));
     expStatFld.setMaximumSize(new java.awt.Dimension(2147483647, 400));
     expStatFld.setMinimumSize(new java.awt.Dimension(6, 400));
@@ -471,12 +468,12 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(expTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
-                    .addComponent(expValLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(expValLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))
                 .addComponent(jScrollPane2)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createSequentialGroup()
                     .addComponent(incTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(incValLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addComponent(jScrollPane1))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -485,9 +482,9 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(incTextLdl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -500,8 +497,8 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
                         .addComponent(expValLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(topPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 747, Short.MAX_VALUE)))
+                    .addGap(18, 18, 18)
+                    .addComponent(tableScrollPane)))
             .addContainerGap())
     );
 

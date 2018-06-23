@@ -11,7 +11,6 @@ import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -22,11 +21,13 @@ public class HomeBudget {
     public final TranscationsTableCtrl TRSCTS;
     public final OperationsTableCtrl OPRTS;
     public static Font DIGITAL_FONT;
+    public static Font STATISTIC_FONT;
     
     public HomeBudget(){
         TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
         OPRTS = (OperationsTableCtrl) getDB().getTable(1);
-        DIGITAL_FONT = createDigitalFont();
+        DIGITAL_FONT = createDigitalFont("digital.ttf");
+        STATISTIC_FONT = createDigitalFont("statisticFont.ttf");
     }
     
     // проверяет наличие БД 
@@ -98,9 +99,9 @@ public class HomeBudget {
     }
     
     // загружает цифровой шрифт
-    private Font createDigitalFont(){
+    private Font createDigitalFont(String path){
         try {
-            return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("digital.ttf"));
+            return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream(path));
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Файл шрифтов digital.ttf не найден!. Будет использован стандартный шрифт."
             );

@@ -1,6 +1,7 @@
 package homebudget.frames;
 
 import homebudget.HomeBudget;
+import homebudget.controllers.TranscationsTableCtrl;
 import homebudget.views.TsctTableCellRender;
 import homebudget.models.OperationsTableLine;
 import homebudget.models.TransactionsTableModel;
@@ -78,12 +79,13 @@ public class TrsctFrame extends javax.swing.JFrame {
         tableHeader.setFont(new Font("Times New Roman", 1, 14));
         tableHeader.setBackground(new Color(240,240,240));
         // первая настройка данных окна
-        GregorianCalendar cldr = new GregorianCalendar();   
-        finalDateChooserBox.setMinDate(FIRST_DATE_RECORD);
-        startDateChooserBox.setMinDate(FIRST_DATE_RECORD);
-        finalDateChooserBox.setMaxDate(HomeBudget.setFinalDate(cldr));
-        startDateChooserBox.setMaxDate(HomeBudget.setFinalDate(cldr));
-        updateData(cldr, cldr);
+        startDateChooserBox.setMaxDate(new GregorianCalendar());
+        GregorianCalendar startCldr = new GregorianCalendar();
+        startCldr.setTimeInMillis(startCldr.getTimeInMillis()-7*86400000);
+        startDateChooserBox.setSelectedDate(startCldr);
+        finalDateChooserBox.setMaxDate(new GregorianCalendar());
+        GregorianCalendar finalCldr = new GregorianCalendar();
+        updateData(startCldr, finalCldr);
     }
    
     // модель choiceOprtComboBox
@@ -104,6 +106,17 @@ public class TrsctFrame extends javax.swing.JFrame {
         table.getColumnModel().getColumn(1).setCellRenderer(tableRender);
         table.getColumnModel().getColumn(2).setCellRenderer(tableRender); 
         // доход, расход
+        ArrayList<TranscationsTableCtrl.OperationStatistic> data;
+        data = launcher.TRSCTS.getTrsctStatistic(0, startDate, finalDate);
+        String strData = "";
+        for(int i=0; i<data.size(); i++)
+            strData += "  " + data.get(i).name + ": " + data.get(i).value + "р. (" + data.get(i).percent + "%)\n\n";
+        incStatFld.setText(strData);
+        data = launcher.TRSCTS.getTrsctStatistic(1, startDate, finalDate);
+        strData = "";
+        for(int i=0; i<data.size(); i++)
+            strData += "  " + data.get(i).name + ": " + data.get(i).value + "р. (" + data.get(i).percent + "%)\n\n";
+        expStatFld.setText(strData);
         incValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalIncome(startDate, finalDate))+" P");
         expValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalExpense(startDate, finalDate))+" P");
         // баланс
@@ -138,6 +151,10 @@ public class TrsctFrame extends javax.swing.JFrame {
         expTextLdl = new javax.swing.JLabel();
         expValLbl = new javax.swing.JLabel();
         opertsBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        incStatFld = new javax.swing.JTextPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        expStatFld = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Домашний бюджет 2.1");
@@ -302,6 +319,7 @@ finalDateChooserBox.setFieldFont(new java.awt.Font("Arial", java.awt.Font.PLAIN,
 finalDateChooserBox.setNavigateFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
 
 timeGapPrdBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Последний день", "Последняя неделя", "Последний месяц", "Все время", "Вручную" }));
+timeGapPrdBox.setSelectedIndex(1);
 timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
     public void actionPerformed(java.awt.event.ActionEvent evt) {
         timeGapPrdBoxActionPerformed(evt);
@@ -427,6 +445,18 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
+    incStatFld.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+    incStatFld.setForeground(new java.awt.Color(0, 153, 0));
+    incStatFld.setMaximumSize(new java.awt.Dimension(2147483647, 10000));
+    incStatFld.setMinimumSize(new java.awt.Dimension(6, 500));
+    jScrollPane1.setViewportView(incStatFld);
+
+    expStatFld.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+    expStatFld.setForeground(new java.awt.Color(255, 0, 0));
+    expStatFld.setMaximumSize(new java.awt.Dimension(2147483647, 400));
+    expStatFld.setMinimumSize(new java.awt.Dimension(6, 400));
+    jScrollPane2.setViewportView(expStatFld);
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
@@ -436,15 +466,25 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                 .addComponent(topPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(tableScrollPane))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                .addComponent(jScrollPane1))
+            .addContainerGap())
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(topPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane2))
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(topPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)))
             .addContainerGap())
     );
 
@@ -501,6 +541,7 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
     private void timeGapPrdBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeGapPrdBoxActionPerformed
         GregorianCalendar startDate;
         int choicePar = timeGapPrdBox.getSelectedIndex();
+        startDateChooserBox.setMinDate(FIRST_DATE_RECORD);
         if(choicePar != 3){
             showDataBtn.setEnabled(false);
             startDateChooserBox.setLocked(true);
@@ -573,12 +614,16 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
     private javax.swing.JLabel balanceLbl;
     private javax.swing.JPanel datePanel;
     private javax.swing.JButton delBaseBtn;
+    private javax.swing.JTextPane expStatFld;
     private javax.swing.JLabel expTextLdl;
     private javax.swing.JLabel expValLbl;
     private datechooser.beans.DateChooserCombo finalDateChooserBox;
+    private javax.swing.JTextPane incStatFld;
     private javax.swing.JLabel incTextLdl;
     private javax.swing.JLabel incValLbl;
     private javax.swing.JTextField inputSumFld;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton opertsBtn;
     private javax.swing.JComboBox<String> oprtComboBox;
     private javax.swing.JButton showDataBtn;

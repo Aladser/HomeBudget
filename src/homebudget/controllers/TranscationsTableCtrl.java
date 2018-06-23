@@ -112,6 +112,43 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         return -1;
     } 
     
+    public static class OperationStatistic{
+        public String name;
+        public double value;
+        public double percent;
+    }
+    
+    public ArrayList<OperationStatistic> getTrsctStatistic(int type, GregorianCalendar startDate, GregorianCalendar finalDate){
+        int sort = type== 0 ? 1: -1;
+        query = "SELECT name, SUM(value*type) value FROM "+dbName+" WHERE type="+sort+" AND date>=";
+        query += startDate.getTimeInMillis()+" AND date<="+finalDate.getTimeInMillis();
+        query +=  " GROUP BY name ORDER BY value DESC";
+        ArrayList<OperationStatistic> rslt = new ArrayList<>();
+        OperationStatistic line;
+        resSet = executeQuery(query);
+        try {
+            while( resSet.next() ){
+                line = new OperationStatistic();
+                line.name = resSet.getString("name");
+                line.value = resSet.getDouble("value");
+                rslt.add(line);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ошибка TranscationsTableCtrl.getOprtStatistic()");
+            System.exit(42);
+        }
+        double sum = 0;
+        for(int i=0; i<rslt.size(); i++) sum += rslt.get(i).value;
+        for(int i=0; i<rslt.size(); i++){
+            line = rslt.get(i);
+            line.percent = line.value * 100 / sum;
+            line.percent *= 100;
+            line.percent = (int)line.percent;
+            line.percent /= 100;
+        }
+        return rslt;
+    } 
+    
     /** Баланс
      * @return 
      * @throws java.sql.SQLException */

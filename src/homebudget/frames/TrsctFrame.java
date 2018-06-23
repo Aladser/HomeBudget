@@ -445,13 +445,13 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
-    incStatFld.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+    incStatFld.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
     incStatFld.setForeground(new java.awt.Color(0, 153, 0));
     incStatFld.setMaximumSize(new java.awt.Dimension(2147483647, 10000));
     incStatFld.setMinimumSize(new java.awt.Dimension(6, 500));
     jScrollPane1.setViewportView(incStatFld);
 
-    expStatFld.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+    expStatFld.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
     expStatFld.setForeground(new java.awt.Color(255, 0, 0));
     expStatFld.setMaximumSize(new java.awt.Dimension(2147483647, 400));
     expStatFld.setMinimumSize(new java.awt.Dimension(6, 400));

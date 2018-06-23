@@ -79,11 +79,13 @@ public class TranscationsTableCtrl extends DBTableCtrl{
     }
     
     /** Общий доход за указанное врем
+     * @param isIncome 0-доход, 1-расход
      * @param startDate
      * @param finalDate
      * @return */
-    public double getTotalIncome(GregorianCalendar startDate, GregorianCalendar finalDate){
-        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=1 AND date>=";
+    public double getTotalBudgetPart(boolean isIncome, GregorianCalendar startDate, GregorianCalendar finalDate){
+        int type = isIncome ? 1 : -1;
+        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type="+type+" AND date>=";
         query += startDate.getTimeInMillis()+" AND date<="+finalDate.getTimeInMillis();
         resSet = executeQuery(query);
         try {        
@@ -94,23 +96,6 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         }        
         return -1;
     }   
-
-    /** Общий доход за указанное врем
-     * @param startDate
-     * @param finalDate
-     * @return */
-    public double getTotalExpense(GregorianCalendar startDate, GregorianCalendar finalDate){
-        query = "SELECT SUM(value) val FROM "+dbName+" WHERE type=-1 AND date>=";
-        query += startDate.getTimeInMillis()+" AND date<="+finalDate.getTimeInMillis();
-        resSet = executeQuery(query);
-        try {        
-            return resSet.getDouble("val");
-        } catch (SQLException ex) {
-            Logger.getLogger(TranscationsTableCtrl.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(0);
-        }
-        return -1;
-    } 
     
     public static class OperationStatistic{
         public String name;

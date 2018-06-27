@@ -90,6 +90,7 @@ public class OperationsFrame extends JDialog {
             }
         });
 
+        inputNewOprtField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         inputNewOprtField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         inputNewOprtField.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

@@ -31,7 +31,7 @@ public class HomeBudget {
     public HomeBudget(){
         TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
         OPRTS = (OperationsTableCtrl) getDB().getTable(1);
-        DIGFONT = createDigitalFont("fonts/digFont.ttf");
+        DIGFONT = createDigitalFont("resources/digFont.ttf");
         try {
             config = new Scanner(new FileReader("data.txt"));
             String strVal = config.nextLine();

@@ -57,15 +57,18 @@ public class TrsctFrame extends javax.swing.JFrame {
         tableScrollPane.getViewport().setBackground(Color.white);
         updateComboBox(typeComboBox.getSelectedIndex());
         // шрифты
-        Font digitalFont = HomeBudget.DIGITAL_FONT.deriveFont( Font.PLAIN, 30 );
-        balanceLbl.setFont(digitalFont);
-        digitalFont = digitalFont.deriveFont( Font.PLAIN, 50 );
-        balanceFld.setFont(digitalFont);
-        digitalFont = digitalFont.deriveFont( Font.PLAIN, 25 );
+        balanceLbl.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 30));
+        balanceFld.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 50));
+        Font digitalFont = HomeBudget.DIGFONT.deriveFont( Font.PLAIN, 25 );
         incValLbl.setFont(digitalFont);
         expValLbl.setFont(digitalFont);
         incTextLdl.setFont(digitalFont);
         expTextLdl.setFont(digitalFont);
+        Font digitalFont2 = HomeBudget.DIGFONT.deriveFont( Font.PLAIN, 20 );
+        incStatFld.setFont(digitalFont2);
+        expStatFld.setFont(digitalFont2);
+        rsrvLbl.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 15));
+        rsrvFld.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 25));
         // background элементов
         oprtComboBox.setBackground(Color.white);
         typeComboBox.setBackground(Color.white);
@@ -73,6 +76,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         // иконки кнопок
         addBtn.setIcon( new ImageIcon(getClass().getResource("images/addIcon.png")) );
         delBaseBtn.setIcon( new ImageIcon(getClass().getResource("images/returnIcon.png")) );
+        editBtn.setIcon( new ImageIcon(getClass().getResource("images/editIcon.png")) );
         // рендер таблицы
         table.setRowHeight(40);
         JTableHeader tableHeader = table.getTableHeader();  
@@ -85,6 +89,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         startDateChooserBox.setSelectedDate(startCldr);
         finalDateChooserBox.setMaxDate(new GregorianCalendar());
         GregorianCalendar finalCldr = new GregorianCalendar();
+        rsrvFld.setText(HomeBudget.formatMoney(launcher.getReserveValue())+" Р");
         updateData(startCldr, finalCldr);
     }
    
@@ -110,18 +115,19 @@ public class TrsctFrame extends javax.swing.JFrame {
         data = launcher.TRSCTS.getTrsctStatistic(0, startDate, finalDate);
         String strData = "\n";
         for(int i=0; i<data.size(); i++)
-            strData += "  " + data.get(i).name + ": " + data.get(i).value + "р. (" + data.get(i).percent + "%)\n\n";
+            strData += "  " + data.get(i).name + ": " + HomeBudget.formatMoney(data.get(i).value) + "р. \n  (" + data.get(i).percent + "%)\n\n";
         incStatFld.setText(strData);
         data = launcher.TRSCTS.getTrsctStatistic(1, startDate, finalDate);
         strData = "\n";
         for(int i=0; i<data.size(); i++)
-            strData += "  " + data.get(i).name + ": " + data.get(i).value + "р. (" + data.get(i).percent + "%)\n\n";
+            strData += "  " + data.get(i).name + ": " + HomeBudget.formatMoney(data.get(i).value) + "р. \n  (" + data.get(i).percent + "%)\n\n";
         expStatFld.setText(strData);
         incValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalBudgetPart(true, startDate, finalDate))+" P");
         expValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalBudgetPart(false, startDate, finalDate))+" P");
         // баланс
         try {
-            balanceFld.setText(HomeBudget.formatMoney(launcher.TRSCTS.getBalance())+" P");
+            double balance = launcher.TRSCTS.getBalance() - launcher.getReserveValue();
+            balanceFld.setText(HomeBudget.formatMoney(balance)+" P");
         } catch (SQLException ex) {
             Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -148,6 +154,9 @@ public class TrsctFrame extends javax.swing.JFrame {
         showDataBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         opertsBtn = new javax.swing.JButton();
+        rsrvLbl = new javax.swing.JLabel();
+        rsrvFld = new javax.swing.JLabel();
+        editBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         incStatFld = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -177,10 +186,11 @@ public class TrsctFrame extends javax.swing.JFrame {
         topPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         balanceLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        balanceLbl.setText(" Баланс");
+        balanceLbl.setText("Баланс");
 
         balanceFld.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
+        inputSumFld.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         inputSumFld.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 inputSumFldMouseClicked(evt);
@@ -263,7 +273,6 @@ public class TrsctFrame extends javax.swing.JFrame {
                 false,
                 true)));
     startDateChooserBox.setNothingAllowed(false);
-    startDateChooserBox.setFormat(1);
     startDateChooserBox.setCalendarBackground(new java.awt.Color(255, 255, 255));
     startDateChooserBox.setFieldFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
     startDateChooserBox.setNavigateFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
@@ -385,6 +394,16 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         }
     });
 
+    rsrvLbl.setBackground(new Color(200,200,200));
+    rsrvLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+    rsrvLbl.setText("Резерв");
+    rsrvLbl.setToolTipText("");
+
+    rsrvFld.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+    editBtn.setBackground(new java.awt.Color(255, 255, 255));
+    editBtn.setToolTipText("Изменить резерв");
+
     javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
     topPanel.setLayout(topPanelLayout);
     topPanelLayout.setHorizontalGroup(
@@ -392,60 +411,79 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         .addGroup(topPanelLayout.createSequentialGroup()
             .addContainerGap()
             .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(typeComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(oprtComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, topPanelLayout.createSequentialGroup()
-                        .addComponent(opertsBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(delBaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addComponent(inputSumFld, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-            .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                .addComponent(balanceFld, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(balanceLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
+                .addComponent(datePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(inputSumFld, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(topPanelLayout.createSequentialGroup()
+                    .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(delBaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(topPanelLayout.createSequentialGroup()
+                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(oprtComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+            .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(balanceFld, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(balanceLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(rsrvLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                    .addComponent(rsrvFld, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
+                    .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(opertsBtn)))
             .addContainerGap())
-        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(datePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(142, 142, 142))
     );
     topPanelLayout.setVerticalGroup(
         topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(topPanelLayout.createSequentialGroup()
-            .addComponent(datePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(topPanelLayout.createSequentialGroup()
+                    .addComponent(datePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
                     .addComponent(inputSumFld, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(11, 11, 11)
-                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(oprtComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(oprtComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(opertsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(delBaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
+                        .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(delBaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(topPanelLayout.createSequentialGroup()
+                    .addContainerGap()
                     .addComponent(balanceLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(balanceFld, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(balanceFld, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(rsrvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(rsrvFld, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(opertsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
-    incStatFld.setFont(new java.awt.Font("Arial Narrow", 0, 20)); // NOI18N
     incStatFld.setForeground(new java.awt.Color(0, 153, 0));
     incStatFld.setMaximumSize(new java.awt.Dimension(2147483647, 10000));
     incStatFld.setMinimumSize(new java.awt.Dimension(6, 500));
+    incStatFld.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            incStatFldMouseClicked(evt);
+        }
+    });
     jScrollPane1.setViewportView(incStatFld);
 
-    expStatFld.setFont(new java.awt.Font("Arial Narrow", 0, 20)); // NOI18N
     expStatFld.setForeground(new java.awt.Color(255, 0, 0));
     expStatFld.setMaximumSize(new java.awt.Dimension(2147483647, 400));
     expStatFld.setMinimumSize(new java.awt.Dimension(6, 400));
+    expStatFld.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            expStatFldMouseClicked(evt);
+        }
+    });
     jScrollPane2.setViewportView(expStatFld);
 
     incValLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -462,25 +500,29 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
-                .addComponent(topPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(topPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tableScrollPane))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGap(18, 18, 18)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(incTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(expTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(incValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(expValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(incTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(incValLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(11, 11, 11))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(expTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(expValLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(14, 14, 14))
+                        .addComponent(jScrollPane1))
+                    .addContainerGap())
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(7, 7, 7)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGap(18, 18, 18)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(23, Short.MAX_VALUE))))
     );
     layout.setVerticalGroup(
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -488,21 +530,21 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             .addContainerGap()
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(incTextLdl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(incValLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(incTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(incValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jScrollPane1)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(expTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(expValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(expValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(13, 13, 13)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(topPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)))
             .addContainerGap())
     );
 
@@ -626,12 +668,21 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             setBounds(xCenter, 0, F_WIDTH , (int) screenSize.getHeight());
     }//GEN-LAST:event_formWindowStateChanged
 
+    private void incStatFldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_incStatFldMouseClicked
+        requestFocus();
+    }//GEN-LAST:event_incStatFldMouseClicked
+
+    private void expStatFldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expStatFldMouseClicked
+        requestFocus();
+    }//GEN-LAST:event_expStatFldMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
     private javax.swing.JLabel balanceFld;
     private javax.swing.JLabel balanceLbl;
     private javax.swing.JPanel datePanel;
     private javax.swing.JButton delBaseBtn;
+    private javax.swing.JButton editBtn;
     private javax.swing.JTextPane expStatFld;
     private javax.swing.JLabel expTextLdl;
     private javax.swing.JLabel expValLbl;
@@ -645,6 +696,8 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton opertsBtn;
     private javax.swing.JComboBox<String> oprtComboBox;
+    private javax.swing.JLabel rsrvFld;
+    private javax.swing.JLabel rsrvLbl;
     private javax.swing.JButton showDataBtn;
     private datechooser.beans.DateChooserCombo startDateChooserBox;
     private javax.swing.JTable table;

@@ -9,10 +9,13 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -20,15 +23,27 @@ import javax.swing.JOptionPane;
 public class HomeBudget {
     public final TranscationsTableCtrl TRSCTS;
     public final OperationsTableCtrl OPRTS;
-    public static Font DIGITAL_FONT;
-    public static Font STATISTIC_FONT;
+    public Scanner config;
+    public static Font DIGFONT;
+    /** Резерв*/
+    static double rsrvValue;
     
     public HomeBudget(){
         TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
         OPRTS = (OperationsTableCtrl) getDB().getTable(1);
-        DIGITAL_FONT = createDigitalFont("digital.ttf");
-        STATISTIC_FONT = createDigitalFont("statisticFont.ttf");
+        DIGFONT = createDigitalFont("fonts/digFont.ttf");
+        try {
+            config = new Scanner(new FileReader("data.txt"));
+            String strVal = config.nextLine();
+            strVal = strVal.substring(strVal.indexOf(" ")+3, strVal.length());
+            rsrvValue = Double.parseDouble(strVal);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(HomeBudget.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
+    public double getReserveValue(){return rsrvValue;}
+    public void setReserveValue(String val){rsrvValue = Double.parseDouble(val);}
     
     // проверяет наличие БД 
     private DBControl getDB(){

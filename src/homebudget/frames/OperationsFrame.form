@@ -46,17 +46,22 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="tablePane" min="-2" pref="190" max="-2" attributes="0"/>
+              <Component id="tablePane" min="-2" pref="402" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="addBtn" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                       <Component id="inputNewOprtField" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="delBtn" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="typeOprtTypeComboBox" alignment="3" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="typeOprtTypeComboBox" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="delBtn" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="addBtn" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

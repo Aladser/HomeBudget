@@ -26,7 +26,8 @@ public class HomeBudget {
     public Scanner config;
     public static Font DIGFONT;
     /** Резерв*/
-    static double rsrvValue;
+    static int rsrvValue;
+    
     
     public HomeBudget(){
         TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
@@ -36,14 +37,14 @@ public class HomeBudget {
             config = new Scanner(new FileReader("data.txt"));
             String strVal = config.nextLine();
             strVal = strVal.substring(strVal.indexOf(" ")+3, strVal.length());
-            rsrvValue = Double.parseDouble(strVal);
+            rsrvValue = Integer.parseInt(strVal);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(HomeBudget.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    public double getReserveValue(){return rsrvValue;}
-    public void setReserveValue(String val){rsrvValue = Double.parseDouble(val);}
+    public int getReserveValue(){return rsrvValue;}
+    public void setReserveValue(int val){rsrvValue = val;}
     
     // проверяет наличие БД 
     private DBControl getDB(){
@@ -67,8 +68,7 @@ public class HomeBudget {
         rslt.set(Calendar.MILLISECOND, 0);
         return rslt;
     }
-    
-    
+        
     /** коррекция finalDate
      * @param cldr
      * @return  */
@@ -113,6 +113,31 @@ public class HomeBudget {
         return rslt;
     }
     
+    /**
+     * Денежный формат
+     * @param src 
+     * @return  
+     */
+    public static String formatMoney(int src){
+        // число как строка
+        String strNumber = Integer.toString(src);
+        char[] charNumber = strNumber.toCharArray();
+        // если разрядность меньше 4
+        if(strNumber.length() < 4) return Double.toString(src);
+        String rslt = "";
+        // шапка числа
+        int numberHeader = strNumber.length()%3;
+        int i=0;
+        for(; i<numberHeader; i++) rslt+= charNumber[i];
+        if(numberHeader != 0) rslt+=" ";
+        // заполенние целой части числа
+        while(i<strNumber.length()){
+            for(int j=0; j<3; j++) rslt+=charNumber[i++];
+            if(i!=strNumber.length())rslt+=" ";
+        }
+        return rslt;
+    }
+    
     // загружает цифровой шрифт
     private Font createDigitalFont(String path){
         try {
@@ -129,6 +154,7 @@ public class HomeBudget {
     }
     
     public static void main(String[] args) {
+        
         EventQueue.invokeLater(() -> {try {
             new TrsctFrame(new HomeBudget()).setVisible(true);
             } catch (SQLException | AWTException ex) {

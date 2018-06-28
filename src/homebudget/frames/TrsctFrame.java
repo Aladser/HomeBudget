@@ -32,12 +32,11 @@ public class TrsctFrame extends javax.swing.JFrame {
     /** есть вручную введенные даты */
     boolean isManualData = false;
     /** кэш ввода суммы */
-    String chashNumberInput = "";
+    String cashNumberInput = "";
     /** размеры  окна */
     final int F_WIDTH = 984;
     final int F_HEIGHT = 715;
     final int xCenter;
-    //final int yCenter;
 
     public TrsctFrame(HomeBudget launcher) throws SQLException, AWTException {
         this.launcher = launcher;
@@ -89,8 +88,9 @@ public class TrsctFrame extends javax.swing.JFrame {
         startDateChooserBox.setSelectedDate(startCldr);
         finalDateChooserBox.setMaxDate(new GregorianCalendar());
         GregorianCalendar finalCldr = new GregorianCalendar();
-        rsrvFld.setText(HomeBudget.formatMoney(launcher.getReserveValue())+" Р");
         updateData(startCldr, finalCldr);
+        /** резервная сумма */
+        rsrvFld.setText(HomeBudget.formatMoney(launcher.getReserveValue())+" Р");
     }
    
     // модель choiceOprtComboBox
@@ -99,6 +99,19 @@ public class TrsctFrame extends javax.swing.JFrame {
         DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<>();
         for(int i=0; i<data.size(); i++) cbModel.addElement(data.get(i).name);
         oprtComboBox.setModel(cbModel);        
+    }
+    
+    // обновить баланс и резерв
+    public void updateReserve(){
+        rsrvFld.setText(HomeBudget.formatMoney(launcher.getReserveValue())+" P");
+        double balance;
+        try {
+            balance = launcher.TRSCTS.getBalance() - launcher.getReserveValue();
+            balanceFld.setText(HomeBudget.formatMoney(balance)+" P");
+        } catch (SQLException ex) {
+            System.err.println("Ошибка TrsctFrame.updateReserve()");
+            Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     // обновляет данные таблицы и полей
@@ -403,6 +416,11 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
 
     editBtn.setBackground(new java.awt.Color(255, 255, 255));
     editBtn.setToolTipText("Изменить резерв");
+    editBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            editBtnActionPerformed(evt);
+        }
+    });
 
     javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
     topPanel.setLayout(topPanelLayout);
@@ -421,18 +439,17 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
                     .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(oprtComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-            .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(balanceFld, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(balanceLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(rsrvLbl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(rsrvFld, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topPanelLayout.createSequentialGroup()
                     .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(opertsBtn)))
-            .addContainerGap())
+                    .addComponent(opertsBtn))
+                .addComponent(rsrvFld, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(rsrvLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(balanceLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(balanceFld, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE))
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     topPanelLayout.setVerticalGroup(
         topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -500,27 +517,24 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                 .addComponent(topPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(tableScrollPane))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(18, 18, 18)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(incTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(incValLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(11, 11, 11))
-                        .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(expTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(expValLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(14, 14, 14))))
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(18, 18, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(expValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(incTextLdl, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(70, 70, 70)
+                            .addComponent(incValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane2))
             .addContainerGap())
     );
     layout.setVerticalGroup(
@@ -567,9 +581,9 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             }
             try{
                 Double.parseDouble(inputSumFld.getText());
-                chashNumberInput = inputSumFld.getText();
+                cashNumberInput = inputSumFld.getText();
             }catch(java.lang.NumberFormatException e){
-                inputSumFld.setText(chashNumberInput);
+                inputSumFld.setText(cashNumberInput);
             }
         }
         else addBtn.setEnabled(false);
@@ -674,6 +688,10 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
     private void expStatFldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_expStatFldMouseClicked
         requestFocus();
     }//GEN-LAST:event_expStatFldMouseClicked
+
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
+        new RsrvDlg(this, true).setVisible(true);
+    }//GEN-LAST:event_editBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;

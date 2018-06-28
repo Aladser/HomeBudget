@@ -96,9 +96,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         }        
         return -1;
     }
-    
-    
-    
+
     public static class OperationStatistic{
         public String name;
         public double value;

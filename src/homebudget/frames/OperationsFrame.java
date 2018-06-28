@@ -5,12 +5,10 @@ import homebudget.views.OprtTableCellRender;
 import homebudget.models.OperationsTableModel;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Frame;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
 public class OperationsFrame extends JDialog {
-    HomeBudget launcher;
     /** номер выбранной мышью строки */
     int selectionRow = -1;
     /** родитель */
@@ -18,10 +16,9 @@ public class OperationsFrame extends JDialog {
     /** тип операций */
     final int type;
     
-    public OperationsFrame(Frame parent, HomeBudget launcher, boolean modal, int type) {
+    public OperationsFrame(TrsctFrame parent, boolean modal, int type) {
         super(parent, modal);
-        this.launcher = launcher;
-        this.parent = (TrsctFrame) parent;
+        this.parent = parent;
         this.type = type;
         initComponents();
         int x =  parent.getX() + (parent.getWidth() - getWidth())/2;
@@ -29,12 +26,12 @@ public class OperationsFrame extends JDialog {
         setLocation(x, y);
         getContentPane().setBackground(Color.white);
         typeOprtTypeComboBox.setBackground(Color.white);
-        inputNewOprtField.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 20));
+        inputNewOprtField.setFont(parent.DIGFONT.deriveFont(Font.PLAIN, 20));
         // иконки
         addBtn.setIcon( new ImageIcon(getClass().getResource("images/addIcon.png")) );
         delBtn.setIcon( new ImageIcon(getClass().getResource("images/delIcon.png")) );
         // таблица
-        table.setModel( new OperationsTableModel(launcher.OPRTS.getData()) );
+        table.setModel( new OperationsTableModel(HomeBudget.OPRTS.getData()) );
         for(int i=0; i<2; i++) 
             table.getColumnModel().getColumn(i).setCellRenderer( new OprtTableCellRender() );
         table.getTableHeader().setFont(new Font("Times New Roman", 1, 14));
@@ -164,8 +161,8 @@ public class OperationsFrame extends JDialog {
         }
         
         int type = typeOprtTypeComboBox.getSelectedIndex();
-        launcher.OPRTS.add(name, type);
-        table.setModel( new OperationsTableModel(launcher.OPRTS.getData()) );
+        HomeBudget.OPRTS.add(name, type);
+        table.setModel( new OperationsTableModel(HomeBudget.OPRTS.getData()) );
         for(int i=0; i<2; i++) 
             table.getColumnModel().getColumn(i).setCellRenderer( new OprtTableCellRender() );
         inputNewOprtField.setText("");
@@ -175,8 +172,8 @@ public class OperationsFrame extends JDialog {
 
     private void delBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBtnActionPerformed
         String name = (String)(table.getValueAt(table.getSelectedRow(), 0));
-        launcher.OPRTS.remove(name);
-        table.setModel( new OperationsTableModel(launcher.OPRTS.getData()) );
+        HomeBudget.OPRTS.remove(name);
+        table.setModel( new OperationsTableModel(HomeBudget.OPRTS.getData()) );
         for(int i=0; i<2; i++) 
             table.getColumnModel().getColumn(i).setCellRenderer( new OprtTableCellRender() );
         delBtn.setEnabled(false);

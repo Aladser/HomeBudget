@@ -4,14 +4,18 @@ import homebudget.frames.TrsctFrame;
 import homebudget.models.DBControl;
 import homebudget.controllers.OperationsTableCtrl;
 import homebudget.controllers.TranscationsTableCtrl;
+import homebudget.frames.RsrvDlg;
 import java.awt.AWTException;
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -20,34 +24,42 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class HomeBudget {
-    public final TranscationsTableCtrl TRSCTS;
-    public final OperationsTableCtrl OPRTS;
-    public Scanner config;
-    public static Font DIGFONT;
-    /** Резерв*/
-    static int rsrvValue;
+public abstract class HomeBudget {
+    static DBControl db = getDB(); // локальная БД
+    public static final TranscationsTableCtrl TRSCTS = (TranscationsTableCtrl) db.getTable(0);
+    public static final OperationsTableCtrl OPRTS = (OperationsTableCtrl) db.getTable(1);
     
-    
-    public HomeBudget(){
-        TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
-        OPRTS = (OperationsTableCtrl) getDB().getTable(1);
-        DIGFONT = createDigitalFont("resources/digFont.ttf");
+    /** Возвращает резервную сумму(копилку)
+     * @return  */
+    public static int getReserveValue(){
         try {
-            config = new Scanner(new FileReader("data.txt"));
-            String strVal = config.nextLine();
+            String strVal = new Scanner(new FileReader("data.txt")).nextLine();
             strVal = strVal.substring(strVal.indexOf(" ")+3, strVal.length());
-            rsrvValue = Integer.parseInt(strVal);
+            return Integer.parseInt(strVal);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(HomeBudget.class.getName()).log(Level.SEVERE, null, ex);
+            return -1;
         }
     }
     
-    public int getReserveValue(){return rsrvValue;}
-    public void setReserveValue(int val){rsrvValue = val;}
+    /**  Устанавливает резервную сумму(копилку)
+     * @param val */
+    public static void setReserveValue(int val){
+        String header = "reserve = ";
+        String oldStr = header + getReserveValue();
+        String newStr = header + val;
+        Charset charset = StandardCharsets.UTF_8;
+        Path path = Paths.get("data.txt");
+        try {
+            Files.write(path, new String(Files.readAllBytes(path), charset)
+                    .replace(oldStr, newStr).getBytes(charset));
+        } catch (IOException ex) {
+            Logger.getLogger(RsrvDlg.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
     
     // проверяет наличие БД 
-    private DBControl getDB(){
+    private static DBControl getDB(){
         String DB_PATH = "hbdb.s3db";
         if(!new File(DB_PATH).exists()){
             JOptionPane.showMessageDialog(null, "Файл \"" + DB_PATH + "\" не найден!. Приложение будет закрыто.");
@@ -137,26 +149,11 @@ public class HomeBudget {
         }
         return rslt;
     }
-    
-    // загружает цифровой шрифт
-    private Font createDigitalFont(String path){
-        try {
-            return Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream(path));
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Файл шрифтов digital.ttf не найден!. Будет использован стандартный шрифт."
-            );
-            return new Font("Consolas", java.awt.Font.PLAIN, 15);
-        } catch (FontFormatException e) {
-            JOptionPane.showMessageDialog(null, "Не удалось установить шрифт digital.ttf!. Будет использован стандартный шрифт."
-            );
-            return new Font("Consolas", Font.PLAIN, 15);
-        }
-    }
-    
+
     public static void main(String[] args) {
-        
-        EventQueue.invokeLater(() -> {try {
-            new TrsctFrame(new HomeBudget()).setVisible(true);
+        EventQueue.invokeLater(() -> {
+            try {
+                new TrsctFrame().setVisible(true);
             } catch (SQLException | AWTException ex) {
                 Logger.getLogger(HomeBudget.class.getName()).log(Level.SEVERE, null, ex);
             }

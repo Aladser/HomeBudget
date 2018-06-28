@@ -3,12 +3,6 @@ package homebudget.frames;
 import homebudget.HomeBudget;
 import java.awt.Color;
 import java.awt.Font;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,29 +10,19 @@ import javax.swing.ImageIcon;
 
 public class RsrvDlg extends javax.swing.JDialog {
     TrsctFrame owner;
-    /** Резерв */
-    int rsrvValue;
-    /** Баланс */
-    int balance;
 
-    public RsrvDlg(java.awt.Frame parent, boolean modal) {
+    public RsrvDlg(TrsctFrame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         owner = (TrsctFrame) parent;
-        rsrvValue = owner.launcher.getReserveValue();
-        try {
-            balance = (int) owner.launcher.TRSCTS.getBalance();
-        } catch (SQLException ex) {
-            Logger.getLogger(RsrvDlg.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        rsrvFld.setText(Integer.toString(rsrvValue));
+        rsrvFld.setText(Integer.toString(HomeBudget.getReserveValue()));
         
         int x =  parent.getX() + (parent.getWidth() - getWidth())/2;
         int y =  parent.getY() + (parent.getHeight() - getHeight())/2;
         setLocation(x, y);
         getContentPane().setBackground(Color.white);
-        rsrvLbl.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 30));
-        rsrvFld.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 50));
+        rsrvLbl.setFont(parent.DIGFONT.deriveFont(Font.PLAIN, 30));
+        rsrvFld.setFont(parent.DIGFONT.deriveFont(Font.PLAIN, 50));
         okBtn.setIcon( new ImageIcon(getClass().getResource("images/okIcon.png")) );
     }
 
@@ -113,19 +97,10 @@ public class RsrvDlg extends javax.swing.JDialog {
     }//GEN-LAST:event_rsrvFldMouseClicked
 
     private void okBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBtnActionPerformed
-        int num = rsrvFld.getText().equals("") ? 0 : Integer.parseInt(rsrvFld.getText());
-        owner.launcher.setReserveValue(num);
-        owner.updateReserve();
-        String oldStr = "reserve = " + rsrvValue;
-        String newStr = "reserve = " + num;
-        Charset charset = StandardCharsets.UTF_8;
-        Path path = Paths.get("data.txt");
-        try {
-            Files.write(path, new String(Files.readAllBytes(path), charset)
-                    .replace(oldStr, newStr).getBytes(charset));
-        } catch (IOException ex) {
-            Logger.getLogger(RsrvDlg.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String strVal = rsrvFld.getText();
+        int num = strVal.equals("") ? 0 : Integer.parseInt(strVal);
+        HomeBudget.setReserveValue(num);
+        owner.updateReserveFld();
         dispose();
     }//GEN-LAST:event_okBtnActionPerformed
 
@@ -138,7 +113,11 @@ public class RsrvDlg extends javax.swing.JDialog {
         }
         rsrvFld.setText(value);
         if(value.equals(""))value = "0";
-        okBtn.setEnabled(Integer.parseInt(value)<=balance);
+        try {
+            okBtn.setEnabled(Integer.parseInt(value)<=(int)HomeBudget.TRSCTS.getBalance());
+        } catch (SQLException ex) {
+            Logger.getLogger(RsrvDlg.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_rsrvFldKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

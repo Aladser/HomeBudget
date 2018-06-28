@@ -1,1 +1,1 @@
-reserve = 50000
+reserve = 20000

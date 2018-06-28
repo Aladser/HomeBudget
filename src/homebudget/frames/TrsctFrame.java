@@ -9,22 +9,23 @@ import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.JTableHeader;
 
 public class TrsctFrame extends javax.swing.JFrame {
-    final homebudget.HomeBudget launcher;
     final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     final long DAY_IN_MS = 86400000;
     final TsctTableCellRender tableRender = new TsctTableCellRender();
@@ -38,11 +39,24 @@ public class TrsctFrame extends javax.swing.JFrame {
     final int F_WIDTH = 984;
     final int F_HEIGHT = 715;
     final int xCenter;
+    /** цифровой шрифт */
+    public Font DIGFONT;
 
-    public TrsctFrame(HomeBudget launcher) throws SQLException, AWTException {
-        this.launcher = launcher;
+    public TrsctFrame() throws SQLException, AWTException {
+        // цифровой шрифт
+        try {
+            DIGFONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("digFont.ttf"));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Файл шрифтов digital.ttf не найден!. Будет использован стандартный шрифт."
+            );
+            DIGFONT = new Font("Consolas", java.awt.Font.PLAIN, 15);
+        } catch (FontFormatException e) {
+            JOptionPane.showMessageDialog(null, "Не удалось установить шрифт digital.ttf!. Будет использован стандартный шрифт."
+            );
+            DIGFONT = new Font("Consolas", Font.PLAIN, 15);
+        }
         // инициализация крайних дат
-        FIRST_DATE_RECORD = launcher.TRSCTS.getFirstRecordDate();
+        FIRST_DATE_RECORD = HomeBudget.TRSCTS.getFirstRecordDate();
         // рендеринг окна
         initComponents();
         getContentPane().setBackground(Color.white);
@@ -57,19 +71,19 @@ public class TrsctFrame extends javax.swing.JFrame {
         tableScrollPane.getViewport().setBackground(Color.white);
         updateComboBox(typeComboBox.getSelectedIndex());
         // шрифты
-        balanceLbl.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 30));
-        balanceFld.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 50));
-        Font digitalFont = HomeBudget.DIGFONT.deriveFont( Font.PLAIN, 25 );
+        balanceLbl.setFont(DIGFONT.deriveFont(Font.PLAIN, 30));
+        balanceFld.setFont(DIGFONT.deriveFont(Font.PLAIN, 50));
+        Font digitalFont = DIGFONT.deriveFont( Font.PLAIN, 25 );
         incValLbl.setFont(digitalFont);
         expValLbl.setFont(digitalFont);
         incTextLdl.setFont(digitalFont);
         expTextLdl.setFont(digitalFont);
-        Font digitalFont2 = HomeBudget.DIGFONT.deriveFont( Font.PLAIN, 20 );
+        Font digitalFont2 = DIGFONT.deriveFont( Font.PLAIN, 20 );
         incStatFld.setFont(digitalFont2);
         expStatFld.setFont(digitalFont2);
-        rsrvLbl.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 15));
-        rsrvFld.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 25));
-        inputSumFld.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 20));
+        rsrvLbl.setFont(DIGFONT.deriveFont(Font.PLAIN, 15));
+        rsrvFld.setFont(DIGFONT.deriveFont(Font.PLAIN, 25));
+        inputSumFld.setFont(DIGFONT.deriveFont(Font.PLAIN, 20));
         // background элементов
         oprtComboBox.setBackground(Color.white);
         typeComboBox.setBackground(Color.white);
@@ -93,23 +107,23 @@ public class TrsctFrame extends javax.swing.JFrame {
         GregorianCalendar finalCldr = new GregorianCalendar();
         updateData(startCldr, finalCldr);
         /** резервная сумма */
-        rsrvFld.setText(HomeBudget.formatMoney(launcher.getReserveValue())+" Р");
+        rsrvFld.setText(HomeBudget.formatMoney(HomeBudget.getReserveValue())+" Р");
     }
    
     // модель choiceOprtComboBox
     public void updateComboBox(int type){
-        ArrayList<OperationsTableLine> data = launcher.OPRTS.getData(typeComboBox.getSelectedIndex());
+        ArrayList<OperationsTableLine> data = HomeBudget.OPRTS.getData(typeComboBox.getSelectedIndex());
         DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<>();
         for(int i=0; i<data.size(); i++) cbModel.addElement(data.get(i).name);
         oprtComboBox.setModel(cbModel);        
     }
     
     // обновить баланс и резерв
-    public void updateReserve(){
-        rsrvFld.setText(HomeBudget.formatMoney(launcher.getReserveValue())+" P");
+    public void updateReserveFld(){
+        rsrvFld.setText(HomeBudget.formatMoney(HomeBudget.getReserveValue())+" P");
         double balance;
         try {
-            balance = launcher.TRSCTS.getBalance() - launcher.getReserveValue();
+            balance = HomeBudget.TRSCTS.getBalance() - HomeBudget.getReserveValue();
             balanceFld.setText(HomeBudget.formatMoney(balance)+" P");
         } catch (SQLException ex) {
             System.err.println("Ошибка TrsctFrame.updateReserve()");
@@ -122,27 +136,27 @@ public class TrsctFrame extends javax.swing.JFrame {
         startDate = HomeBudget.setHourZero(startDate);
         finalDate = HomeBudget.setFinalDate(finalDate);
         // таблица
-        table.setModel( new TransactionsTableModel(launcher.TRSCTS.getData(startDate, finalDate)));
+        table.setModel( new TransactionsTableModel(HomeBudget.TRSCTS.getData(startDate, finalDate)));
         table.getColumnModel().getColumn(0).setCellRenderer(tableRender);
         table.getColumnModel().getColumn(1).setCellRenderer(tableRender);
         table.getColumnModel().getColumn(2).setCellRenderer(tableRender); 
         // доход, расход
         ArrayList<TranscationsTableCtrl.OperationStatistic> data;
-        data = launcher.TRSCTS.getTrsctStatistic(0, startDate, finalDate);
+        data = HomeBudget.TRSCTS.getTrsctStatistic(0, startDate, finalDate);
         String strData = "\n";
         for(int i=0; i<data.size(); i++)
             strData += "  " + data.get(i).name + ": " + HomeBudget.formatMoney(data.get(i).value) + "р. \n  (" + data.get(i).percent + "%)\n";
         incStatFld.setText(strData);
-        data = launcher.TRSCTS.getTrsctStatistic(1, startDate, finalDate);
+        data = HomeBudget.TRSCTS.getTrsctStatistic(1, startDate, finalDate);
         strData = "\n";
         for(int i=0; i<data.size(); i++)
             strData += "  " + data.get(i).name + ": " + HomeBudget.formatMoney(data.get(i).value) + "р. \n  (" + data.get(i).percent + "%)\n";
         expStatFld.setText(strData);
-        incValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalBudgetPart(true, startDate, finalDate))+" P");
-        expValLbl.setText(HomeBudget.formatMoney(launcher.TRSCTS.getTotalBudgetPart(false, startDate, finalDate))+" P");
+        incValLbl.setText(HomeBudget.formatMoney(HomeBudget.TRSCTS.getTotalBudgetPart(true, startDate, finalDate))+" P");
+        expValLbl.setText(HomeBudget.formatMoney(HomeBudget.TRSCTS.getTotalBudgetPart(false, startDate, finalDate))+" P");
         // баланс
         try {
-            double balance = launcher.TRSCTS.getBalance() - launcher.getReserveValue();
+            double balance = HomeBudget.TRSCTS.getBalance() - HomeBudget.getReserveValue();
             balanceFld.setText(HomeBudget.formatMoney(balance)+" P");
         } catch (SQLException ex) {
             Logger.getLogger(TrsctFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -580,7 +594,7 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
     }// </editor-fold>//GEN-END:initComponents
 
     private void opertsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opertsBtnActionPerformed
-        new OperationsFrame(this, launcher, true, typeComboBox.getSelectedIndex()).setVisible(true);
+        new OperationsFrame(this, true, typeComboBox.getSelectedIndex()).setVisible(true);
     }//GEN-LAST:event_opertsBtnActionPerformed
 
     private void typeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeComboBoxActionPerformed
@@ -608,7 +622,7 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
         String name = (String)oprtComboBox.getSelectedItem();
         double value = Double.parseDouble( inputSumFld.getText() );
         int type = typeComboBox.getSelectedIndex()==0 ? 1: -1;
-        launcher.TRSCTS.add(name, value, type);
+        HomeBudget.TRSCTS.add(name, value, type);
         inputSumFld.setText("");
         GregorianCalendar startDate = (GregorianCalendar) startDateChooserBox.getSelectedDate();
         GregorianCalendar finalDate = (GregorianCalendar) finalDateChooserBox.getSelectedDate();
@@ -616,7 +630,7 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void delBaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delBaseBtnActionPerformed
-        launcher.TRSCTS.removeLast();
+        HomeBudget.TRSCTS.removeLast();
         GregorianCalendar startDate = (GregorianCalendar) startDateChooserBox.getSelectedDate();
         GregorianCalendar finalDate = (GregorianCalendar) finalDateChooserBox.getSelectedDate();
         updateData(startDate, finalDate);

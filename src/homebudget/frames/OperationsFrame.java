@@ -29,6 +29,7 @@ public class OperationsFrame extends JDialog {
         setLocation(x, y);
         getContentPane().setBackground(Color.white);
         typeOprtTypeComboBox.setBackground(Color.white);
+        inputNewOprtField.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 20));
         // иконки
         addBtn.setIcon( new ImageIcon(getClass().getResource("images/addIcon.png")) );
         delBtn.setIcon( new ImageIcon(getClass().getResource("images/delIcon.png")) );
@@ -112,7 +113,7 @@ public class OperationsFrame extends JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tablePane, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(inputNewOprtField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(inputNewOprtField, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(typeOprtTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -128,12 +129,11 @@ public class OperationsFrame extends JDialog {
                 .addComponent(tablePane, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(inputNewOprtField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(typeOprtTypeComboBox))
+                    .addComponent(typeOprtTypeComboBox)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputNewOprtField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(delBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(addBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
@@ -186,8 +186,8 @@ public class OperationsFrame extends JDialog {
     private void inputNewOprtFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputNewOprtFieldKeyReleased
         String text = inputNewOprtField.getText();
         // Ограничение длины текста 10 символами
-        if(text.toCharArray().length > 10){
-            text = text.substring(0, 10);
+        if(text.toCharArray().length > 12){
+            text = text.substring(0, 12);
             inputNewOprtField.setText(text);
         }
         if( text.equals("")) addBtn.setEnabled(false); 

@@ -68,6 +68,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         expStatFld.setFont(digitalFont2);
         rsrvLbl.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 15));
         rsrvFld.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 25));
+        inputSumFld.setFont(HomeBudget.DIGFONT.deriveFont(Font.PLAIN, 20));
         // background элементов
         oprtComboBox.setBackground(Color.white);
         typeComboBox.setBackground(Color.white);
@@ -520,9 +521,8 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                 .addComponent(topPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(tableScrollPane))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
@@ -534,7 +534,10 @@ timeGapPrdBox.addActionListener(new java.awt.event.ActionListener() {
                             .addGap(70, 70, 70)
                             .addComponent(incValLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGap(0, 0, Short.MAX_VALUE))
-                .addComponent(jScrollPane2))
+                .addComponent(jScrollPane2)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addContainerGap())
     );
     layout.setVerticalGroup(

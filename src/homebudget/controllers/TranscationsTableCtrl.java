@@ -95,7 +95,9 @@ public class TranscationsTableCtrl extends DBTableCtrl{
             System.exit(0);
         }        
         return -1;
-    }   
+    }
+    
+    
     
     public static class OperationStatistic{
         public String name;
@@ -107,7 +109,8 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         int sort = type== 0 ? 1: -1;
         query = "SELECT name, SUM(value*type) value FROM "+dbName+" WHERE type="+sort+" AND date>=";
         query += startDate.getTimeInMillis()+" AND date<="+finalDate.getTimeInMillis();
-        query +=  " GROUP BY name ORDER BY value DESC";
+        query +=  " GROUP BY name ORDER BY value";
+        if(type == 0) query += " DESC";
         ArrayList<OperationStatistic> rslt = new ArrayList<>();
         OperationStatistic line;
         resSet = executeQuery(query);
@@ -115,7 +118,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
             while( resSet.next() ){
                 line = new OperationStatistic();
                 line.name = resSet.getString("name");
-                line.value = resSet.getDouble("value");
+                line.value = type==1 ?  resSet.getDouble("value")*(-1) : resSet.getDouble("value"); 
                 rslt.add(line);
             }
         } catch (SQLException ex) {

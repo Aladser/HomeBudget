@@ -25,9 +25,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public abstract class HomeBudget {
-    static DBControl db = getDB(); // локальная БД
-    public static final TranscationsTableCtrl TRSCTS = (TranscationsTableCtrl) db.getTable(0);
-    public static final OperationsTableCtrl OPRTS = (OperationsTableCtrl) db.getTable(1);
+    public static final TranscationsTableCtrl TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
+    public static final OperationsTableCtrl OPRTS = (OperationsTableCtrl) getDB().getTable(1);
     
     /** Возвращает резервную сумму(копилку)
      * @return  */
@@ -62,16 +61,19 @@ public abstract class HomeBudget {
     private static DBControl getDB(){
         String DB_PATH = "hbdb.s3db";
         if(!new File(DB_PATH).exists()){
-            JOptionPane.showMessageDialog(null, "Файл \"" + DB_PATH + "\" не найден!. Приложение будет закрыто.");
+            JOptionPane.showMessageDialog(
+                    null, 
+                    "Файл \"" + DB_PATH + "\" не найден!. Приложение будет закрыто."
+            );
             System.exit(42);
         }
         return new DBControl(DB_PATH);
     }
     
-    /** Обнулить часы даты
+    /** Установить начало дня
      * @param cldr
      * @return  */
-    public static GregorianCalendar setHourZero(GregorianCalendar cldr){
+    public static GregorianCalendar setDayStart(GregorianCalendar cldr){
         GregorianCalendar rslt = new GregorianCalendar();
         rslt.setTime(cldr.getTime());
         rslt.set(Calendar.HOUR_OF_DAY, 0);
@@ -81,11 +83,11 @@ public abstract class HomeBudget {
         return rslt;
     }
         
-    /** коррекция finalDate
+    /** Установить конец дня
      * @param cldr
      * @return  */
-    public static GregorianCalendar setFinalDate(GregorianCalendar cldr){
-        GregorianCalendar rslt = setHourZero(cldr);
+    public static GregorianCalendar setDayFinal(GregorianCalendar cldr){
+        GregorianCalendar rslt = setDayStart(cldr);
         rslt.setTimeInMillis(rslt.getTimeInMillis()+86400000);
         return rslt;
     }

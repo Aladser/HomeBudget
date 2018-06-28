@@ -46,12 +46,10 @@ public class TrsctFrame extends javax.swing.JFrame {
         // цифровой шрифт
         try {
             DIGFONT = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("digFont.ttf"));
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Файл шрифтов digital.ttf не найден!. Будет использован стандартный шрифт."
-            );
-            DIGFONT = new Font("Consolas", java.awt.Font.PLAIN, 15);
-        } catch (FontFormatException e) {
-            JOptionPane.showMessageDialog(null, "Не удалось установить шрифт digital.ttf!. Будет использован стандартный шрифт."
+        } catch (IOException | FontFormatException ex) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Не удалось установить шрифт digital.ttf!. Будет использован стандартный шрифт."
             );
             DIGFONT = new Font("Consolas", Font.PLAIN, 15);
         }
@@ -133,8 +131,8 @@ public class TrsctFrame extends javax.swing.JFrame {
     
     // обновляет данные таблицы и полей
     private void updateData(GregorianCalendar startDate, GregorianCalendar finalDate){
-        startDate = HomeBudget.setHourZero(startDate);
-        finalDate = HomeBudget.setFinalDate(finalDate);
+        startDate = HomeBudget.setDayStart(startDate);
+        finalDate = HomeBudget.setDayFinal(finalDate);
         // таблица
         table.setModel( new TransactionsTableModel(HomeBudget.TRSCTS.getData(startDate, finalDate)));
         table.getColumnModel().getColumn(0).setCellRenderer(tableRender);
@@ -652,14 +650,14 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
         }
         switch(choicePar){
             case 0:
-                startDate = HomeBudget.setHourZero(new GregorianCalendar());
+                startDate = HomeBudget.setDayStart(new GregorianCalendar());
                 break;
             case 1:
-                startDate = HomeBudget.setHourZero(new GregorianCalendar());
+                startDate = HomeBudget.setDayStart(new GregorianCalendar());
                 startDate.setTimeInMillis(startDate.getTimeInMillis()-86400000*7);
                 break;
             case 2:
-                startDate = HomeBudget.setHourZero(new GregorianCalendar());
+                startDate = HomeBudget.setDayStart(new GregorianCalendar());
                 startDate.set(Calendar.DAY_OF_MONTH, 1);
                 break;
             case 3:

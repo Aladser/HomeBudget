@@ -1,5 +1,6 @@
 package homebudget.controllers;
 
+import homebudget.HomeBudget;
 import homebudget.models.DBConnection;
 import homebudget.models.TransactionsTableLine;
 import java.sql.SQLException;
@@ -26,7 +27,7 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         long time = executeQuery(query).getLong("val");
         GregorianCalendar rslt = new GregorianCalendar();
         rslt.setTimeInMillis(time);
-        rslt = homebudget.HomeBudget.setHourZero(rslt);
+        rslt = HomeBudget.setDayStart(rslt);
         return rslt;
     }
     

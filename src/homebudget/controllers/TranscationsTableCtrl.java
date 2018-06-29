@@ -46,15 +46,14 @@ public class TranscationsTableCtrl extends DBTableCtrl{
         executeQueryNoRes(query);
     }
     
+    /** Удалить последнюю запись */
     public void removeLast(){
         query = "DELETE FROM "+dbName+" WHERE date=(SELECT MAX(date) FROM transactions)";
         executeQueryNoRes(query);
     }
     
-    public void removeData(){
-        query = "DELETE FROM "+dbName;
-        executeQueryNoRes(query);
-    }
+    /** Удалить данные */
+    public void removeData(){executeQueryNoRes("DELETE FROM "+dbName);}
 
     /**
      * Получение таблицы за указанный промежуток времени

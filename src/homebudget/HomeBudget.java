@@ -153,7 +153,7 @@ public abstract class HomeBudget {
         return rslt;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         UIManager.put("OptionPane.yesButtonText", "Да");
         UIManager.put("OptionPane.noButtonText", "Нет");
         EventQueue.invokeLater(() -> {

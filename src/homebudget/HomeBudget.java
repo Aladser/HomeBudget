@@ -23,6 +23,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 public abstract class HomeBudget {
     public static final TranscationsTableCtrl TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
@@ -153,6 +154,8 @@ public abstract class HomeBudget {
     }
 
     public static void main(String[] args) {
+        UIManager.put("OptionPane.yesButtonText", "Да");
+        UIManager.put("OptionPane.noButtonText", "Нет");
         EventQueue.invokeLater(() -> {
             try {
                 new TrsctFrame().setVisible(true);

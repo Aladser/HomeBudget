@@ -25,6 +25,11 @@ public class OperationsTableCtrl extends DBTableCtrl{
         executeQueryNoRes("DELETE FROM "+dbName+" WHERE name = '"+name+"'");       
     }
     
+    /** Удалить все */
+    public void removeData(){
+        executeQueryNoRes("DELETE FROM "+dbName);
+    }
+    
     public boolean isValue(String name) throws SQLException{
         query = "SELECT COUNT() count FROM "+dbName+" WHERE name = '"+name+"'";
         return executeQuery(query).getInt("count") != 0;

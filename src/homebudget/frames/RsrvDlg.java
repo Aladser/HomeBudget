@@ -23,7 +23,7 @@ public class RsrvDlg extends javax.swing.JDialog {
         getContentPane().setBackground(Color.white);
         rsrvLbl.setFont(parent.DIGFONT.deriveFont(Font.PLAIN, 30));
         rsrvFld.setFont(parent.DIGFONT.deriveFont(Font.PLAIN, 50));
-        okBtn.setIcon( new ImageIcon(getClass().getResource("images/okIcon.png")) );
+        okBtn.setIcon( new ImageIcon(getClass().getResource("resources/images/okIcon.png")) );
     }
 
     @SuppressWarnings("unchecked")
@@ -36,11 +36,11 @@ public class RsrvDlg extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        rsrvLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rsrvLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         rsrvLbl.setText("Копилка");
 
-        rsrvFld.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        rsrvFld.setText("jTextField1");
+        rsrvFld.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        rsrvFld.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         rsrvFld.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rsrvFldMouseClicked(evt);
@@ -65,27 +65,24 @@ public class RsrvDlg extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rsrvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rsrvFld, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(194, 194, 194)
-                        .addComponent(okBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(okBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(rsrvFld)
+                        .addComponent(rsrvLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(47, Short.MAX_VALUE)
                 .addComponent(rsrvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(rsrvFld, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -106,6 +103,13 @@ public class RsrvDlg extends javax.swing.JDialog {
 
     private void rsrvFldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rsrvFldKeyReleased
         String value = rsrvFld.getText();
+        // ограничение длины
+        if(value.length() > 10){
+            value = value.substring(0, 10);
+            rsrvFld.setText(value);
+            return;
+        }
+        
         try{Integer.parseInt(value);}
         catch(java.lang.NumberFormatException exc1){
             try{value=value.substring(0, value.length()-1);}

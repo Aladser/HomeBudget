@@ -35,32 +35,32 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="topPanel" max="32767" attributes="0"/>
-                  <Component id="tableScrollPane" pref="817" max="32767" attributes="0"/>
+                  <Component id="tableScrollPane" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="expTextLdl" min="-2" pref="90" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="expValLbl" min="-2" pref="245" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="incTextLdl" min="-2" pref="75" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
-                              <Component id="incValLbl" min="-2" pref="261" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" alignment="0" pref="419" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                              <Component id="expTextLdl" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="expValLbl" min="-2" pref="223" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane2" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="419" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="0" pref="9" max="32767" attributes="0"/>
+                      <Component id="incTextLdl" min="-2" pref="131" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="incValLbl" min="-2" pref="261" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -70,12 +70,19 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <Component id="topPanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="tableScrollPane" pref="605" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="incTextLdl" min="-2" pref="40" max="-2" attributes="0"/>
-                          <Component id="incValLbl" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="incValLbl" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="incTextLdl" min="-2" pref="40" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" min="-2" pref="293" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="293" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="expTextLdl" min="-2" pref="40" max="-2" attributes="0"/>
@@ -83,11 +90,6 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane2" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="topPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="tableScrollPane" pref="661" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -140,76 +142,65 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Component id="datePanel" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="inputSumFld" min="-2" pref="170" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="addBtn" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="delBaseBtn" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="balanceFld" min="-2" pref="410" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="rsrvFld" alignment="0" max="32767" attributes="0"/>
-                              <Component id="rsrvLbl" alignment="0" max="32767" attributes="0"/>
-                              <Component id="balanceLbl" alignment="0" max="32767" attributes="0"/>
-                              <Component id="balanceFld" alignment="0" pref="410" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="rsrvFld" min="-2" pref="238" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="typeComboBox" min="-2" pref="170" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="oprtComboBox" min="-2" pref="165" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="balanceLbl" min="-2" pref="410" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="rsrvLbl" min="-2" pref="50" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="editBtn" min="-2" pref="30" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="opertsBtn" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="oprtComboBox" alignment="0" max="32767" attributes="0"/>
+                              <Component id="inputSumFld" alignment="0" max="32767" attributes="0"/>
+                              <Component id="typeComboBox" alignment="0" pref="170" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="addBtn" min="-2" pref="30" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="delBaseBtn" min="-2" pref="30" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="datePanel" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="balanceLbl" min="-2" pref="50" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="balanceFld" min="-2" pref="75" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rsrvLbl" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                          <Component id="rsrvFld" min="-2" pref="27" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="datePanel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="inputSumFld" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="addBtn" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="delBaseBtn" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
+                  <Component id="datePanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="oprtComboBox" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="typeComboBox" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="rsrvLbl" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="balanceLbl" min="-2" pref="30" max="-2" attributes="0"/>
                       <Component id="editBtn" min="-2" pref="30" max="-2" attributes="0"/>
                       <Component id="opertsBtn" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="14" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="balanceFld" pref="40" max="32767" attributes="0"/>
+                      <Component id="rsrvFld" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="inputSumFld" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="addBtn" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="delBaseBtn" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="typeComboBox" min="-2" pref="30" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="oprtComboBox" min="-2" pref="30" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -217,13 +208,13 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="balanceLbl">
           <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="&#x411;&#x430;&#x43b;&#x430;&#x43d;&#x441;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="balanceFld">
           <Properties>
-            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="horizontalAlignment" type="int" value="2"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="inputSumFld">
@@ -236,27 +227,6 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="inputSumFldMouseClicked"/>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="inputSumFldKeyReleased"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="typeComboBox">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
-                <StringItem index="0" value="&#x414;&#x43e;&#x445;&#x43e;&#x434;"/>
-                <StringItem index="1" value="&#x420;&#x430;&#x441;&#x445;&#x43e;&#x434;"/>
-              </StringArray>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="typeComboBoxActionPerformed"/>
-          </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="oprtComboBox">
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="addBtn">
           <Properties>
@@ -303,41 +273,33 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="timeGapPrdBox" min="-2" pref="155" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="startDateChooserBox" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="finalDateChooserBox" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="showDataBtn" alignment="1" min="-2" pref="155" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="startDateChooserBox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="finalDateChooserBox" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="timeGapPrdBox" min="-2" pref="155" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="showDataBtn" min="-2" pref="155" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="startDateChooserBox" alignment="1" pref="30" max="32767" attributes="0"/>
-                          <Component id="finalDateChooserBox" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jLabel1" alignment="1" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="timeGapPrdBox" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                          <Component id="showDataBtn" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="startDateChooserBox" alignment="1" pref="30" max="32767" attributes="0"/>
+                              <Component id="finalDateChooserBox" alignment="1" max="32767" attributes="0"/>
+                              <Component id="jLabel1" alignment="1" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="timeGapPrdBox" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="showDataBtn" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -454,7 +416,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="cc" red="33" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="&#x420;&#x435;&#x437;&#x435;&#x440;&#x432;"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
@@ -464,7 +426,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="cc" red="33" type="rgb"/>
             </Property>
-            <Property name="horizontalAlignment" type="int" value="4"/>
+            <Property name="horizontalAlignment" type="int" value="2"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="editBtn">
@@ -477,6 +439,27 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editBtnActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="typeComboBox">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="2">
+                <StringItem index="0" value="&#x414;&#x43e;&#x445;&#x43e;&#x434;"/>
+                <StringItem index="1" value="&#x420;&#x430;&#x441;&#x445;&#x43e;&#x434;"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="typeComboBoxActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="oprtComboBox">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

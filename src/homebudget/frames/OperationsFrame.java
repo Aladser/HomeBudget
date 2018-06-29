@@ -28,8 +28,8 @@ public class OperationsFrame extends JDialog {
         typeOprtTypeComboBox.setBackground(Color.white);
         inputNewOprtField.setFont(parent.DIGFONT.deriveFont(Font.PLAIN, 20));
         // иконки
-        addBtn.setIcon( new ImageIcon(getClass().getResource("images/addIcon.png")) );
-        delBtn.setIcon( new ImageIcon(getClass().getResource("images/delIcon.png")) );
+        addBtn.setIcon( new ImageIcon(getClass().getResource("resources/images/addIcon.png")) );
+        delBtn.setIcon( new ImageIcon(getClass().getResource("resources/images/delIcon.png")) );
         // таблица
         table.setModel( new OperationsTableModel(HomeBudget.OPRTS.getData()) );
         for(int i=0; i<2; i++) 

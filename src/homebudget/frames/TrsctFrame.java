@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
 
 public class TrsctFrame extends javax.swing.JFrame {

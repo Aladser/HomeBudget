@@ -119,12 +119,10 @@ public abstract class HomeBudget {
             if(i!=strNumber.length())rslt+=" ";
         }
         // дробная часть
-        rslt+=".";
-        int fraction = (int) (Math.round(src*100) - (int)src*100);
-        if(fraction == 0) rslt += "00";
-        else if(fraction < 10) rslt += "0"+fraction;
+        String fraction = Double.toString(src);
+        fraction = fraction.substring(fraction.indexOf("."), fraction.length());
+        if(fraction.equals(".0")) rslt += ".00";
         else rslt += fraction;
-        
         return rslt;
     }
     

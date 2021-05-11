@@ -28,7 +28,7 @@ public class TransactionsTableModel implements TableModel{
         switch(index){
             case 0: return "Операция";
             case 1: return "Сумма";
-            default: return "Дата операции";
+            default: return "Дата";
         } 
     }
 

@@ -29,11 +29,12 @@ public abstract class HomeBudget {
     public static final TranscationsTableCtrl TRSCTS = (TranscationsTableCtrl) getDB().getTable(0);
     public static final OperationsTableCtrl OPRTS = (OperationsTableCtrl) getDB().getTable(1);
     
+    
     /** Возвращает резервную сумму(копилку)
      * @return  */
     public static int getReserveValue(){
         try {
-            String strVal = new Scanner(new FileReader("data.txt")).nextLine();
+            String strVal = new Scanner(new FileReader("data.rsv")).nextLine();
             strVal = strVal.substring(strVal.indexOf(" ")+3, strVal.length());
             return Integer.parseInt(strVal);
         } catch (FileNotFoundException ex) {
@@ -64,7 +65,7 @@ public abstract class HomeBudget {
         if(!new File(DB_PATH).exists()){
             JOptionPane.showMessageDialog(
                     null, 
-                    "Файл \"" + DB_PATH + "\" не найден!. Приложение будет закрыто."
+                    "Файл \"" + DB_PATH + "\" не найден! Приложение будет закрыто."
             );
             System.exit(42);
         }
@@ -154,6 +155,15 @@ public abstract class HomeBudget {
     public static void main(String[] args) throws IOException {
         UIManager.put("OptionPane.yesButtonText", "Да");
         UIManager.put("OptionPane.noButtonText", "Нет");
+        // Проверяет наличие файла data.txt
+        if(!new File("data.rsv.").exists()){
+            JOptionPane.showMessageDialog(
+                    null, 
+                    "Файл data.rsv не найден! Приложение будет закрыто."
+            );
+            System.exit(42);
+        }
+        
         EventQueue.invokeLater(() -> {
             try {
                 new TrsctFrame().setVisible(true);

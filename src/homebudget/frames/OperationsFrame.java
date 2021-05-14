@@ -180,11 +180,13 @@ public class OperationsFrame extends JDialog {
         parent.updateComboBox(type);
     }//GEN-LAST:event_delBtnActionPerformed
 
+    /*
+        Ограничение длины текста 15 символами
+    */
     private void inputNewOprtFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputNewOprtFieldKeyReleased
         String text = inputNewOprtField.getText();
-        // Ограничение длины текста 10 символами
-        if(text.toCharArray().length > 12){
-            text = text.substring(0, 12);
+        if(text.toCharArray().length > 15){
+            text = text.substring(0, 15);
             inputNewOprtField.setText(text);
         }
         if( text.equals("")) addBtn.setEnabled(false); 

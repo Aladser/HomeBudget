@@ -90,6 +90,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         editBtn.setIcon( new ImageIcon(getClass().getResource("resources/images/editIcon.png")) );
         opertsBtn.setIcon( new ImageIcon(getClass().getResource("resources/images/oprtsIcon.png")) );
         delBaseBtn.setIcon( new ImageIcon(getClass().getResource("resources/images/delIcon.png")) );
+        infoBtn.setIcon( new ImageIcon(getClass().getResource("resources/images/infoIcon.png")) );
         // рендер таблицы
         table.setRowHeight(40);
         JTableHeader tableHeader = table.getTableHeader();  
@@ -185,6 +186,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         typeComboBox = new javax.swing.JComboBox<String>();
         oprtComboBox = new javax.swing.JComboBox<String>();
         delBaseBtn = new javax.swing.JButton();
+        infoBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         incStatFld = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -195,7 +197,7 @@ public class TrsctFrame extends javax.swing.JFrame {
         expTextLdl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Домашний бюджет v1.2 by Aladser");
+        setTitle("Домашний бюджет v1.2");
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
         addWindowStateListener(new java.awt.event.WindowStateListener() {
@@ -448,6 +450,14 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
         }
     });
 
+    infoBtn.setBackground(new java.awt.Color(255, 255, 255));
+    infoBtn.setToolTipText("Удалить базу");
+    infoBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            infoBtnActionPerformed(evt);
+        }
+    });
+
     javax.swing.GroupLayout topPanelLayout = new javax.swing.GroupLayout(topPanel);
     topPanel.setLayout(topPanelLayout);
     topPanelLayout.setHorizontalGroup(
@@ -461,33 +471,34 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
                 .addGroup(topPanelLayout.createSequentialGroup()
                     .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(datePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(topPanelLayout.createSequentialGroup()
-                                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(inputSumFld, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(typeComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, 170, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(topPanelLayout.createSequentialGroup()
-                                        .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(backOptrBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(topPanelLayout.createSequentialGroup()
-                                        .addComponent(oprtComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 277, Short.MAX_VALUE)
-                                        .addComponent(delBaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(opertsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(topPanelLayout.createSequentialGroup()
-                                .addComponent(balanceFld, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(topPanelLayout.createSequentialGroup()
-                                        .addComponent(rsrvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(rsrvFld, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, topPanelLayout.createSequentialGroup()
+                            .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(inputSumFld, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(typeComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, 170, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(topPanelLayout.createSequentialGroup()
+                                    .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(backOptrBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(212, 212, 212))
+                                .addGroup(topPanelLayout.createSequentialGroup()
+                                    .addComponent(oprtComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(infoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(delBaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(opertsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, topPanelLayout.createSequentialGroup()
+                            .addComponent(balanceFld, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(topPanelLayout.createSequentialGroup()
+                                    .addComponent(rsrvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(editBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(rsrvFld, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
     );
     topPanelLayout.setVerticalGroup(
@@ -515,7 +526,8 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
                     .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(oprtComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(delBaseBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addComponent(opertsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(opertsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(infoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
@@ -771,6 +783,10 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
         }        
     }//GEN-LAST:event_delBaseBtnActionPerformed
 
+    private void infoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoBtnActionPerformed
+        new infoDialog(this, true).setVisible(true);
+    }//GEN-LAST:event_infoBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
     private javax.swing.JButton backOptrBtn;
@@ -786,6 +802,7 @@ finalDateChooserBox.addSelectionChangedListener(new datechooser.events.Selection
     private javax.swing.JTextPane incStatFld;
     private javax.swing.JLabel incTextLdl;
     private javax.swing.JLabel incValLbl;
+    private javax.swing.JButton infoBtn;
     private javax.swing.JTextField inputSumFld;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -21,7 +21,6 @@ public class RsrvDlg extends javax.swing.JDialog {
         int y =  parent.getY() + (parent.getHeight() - getHeight())/2;
         setLocation(x, y);
         getContentPane().setBackground(Color.white);
-        rsrvLbl.setFont(parent.DIGFONT.deriveFont(Font.PLAIN, 30));
         rsrvFld.setFont(parent.DIGFONT.deriveFont(Font.PLAIN, 50));
         okBtn.setIcon( new ImageIcon(getClass().getResource("resources/images/okIcon.png")) );
     }
@@ -30,20 +29,22 @@ public class RsrvDlg extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        rsrvLbl = new javax.swing.JLabel();
         rsrvFld = new javax.swing.JTextField();
         okBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        rsrvLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        rsrvLbl.setText("Копилка");
+        setTitle("Копилка");
 
         rsrvFld.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         rsrvFld.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         rsrvFld.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rsrvFldMouseClicked(evt);
+            }
+        });
+        rsrvFld.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rsrvFldActionPerformed(evt);
             }
         });
         rsrvFld.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -65,27 +66,22 @@ public class RsrvDlg extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(okBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(rsrvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(rsrvFld, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(344, 344, 344)
+                .addComponent(okBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(rsrvFld, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(47, Short.MAX_VALUE)
-                .addComponent(rsrvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap(75, Short.MAX_VALUE)
                 .addComponent(rsrvFld, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(okBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(59, 59, 59))
         );
 
         pack();
@@ -127,9 +123,12 @@ public class RsrvDlg extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_rsrvFldKeyReleased
 
+    private void rsrvFldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rsrvFldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rsrvFldActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton okBtn;
     private javax.swing.JTextField rsrvFld;
-    private javax.swing.JLabel rsrvLbl;
     // End of variables declaration//GEN-END:variables
 }

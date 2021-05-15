@@ -25,7 +25,7 @@ public class infoDialog extends javax.swing.JDialog {
         initComponents();
         owner = (TrsctFrame) parent;
         textArea.setText("\n\n         Домашний бюджет"
-                             + "\n            версия 1220\n"
+                             + "\n            версия 1221\n"
                              + "\n          (с)Aladser 2021г.");
         
         int x =  parent.getX() + (parent.getWidth() - getWidth())/2;

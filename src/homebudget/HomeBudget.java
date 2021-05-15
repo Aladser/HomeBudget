@@ -50,7 +50,7 @@ public abstract class HomeBudget {
         String oldStr = header + getReserveValue();
         String newStr = header + val;
         Charset charset = StandardCharsets.UTF_8;
-        Path path = Paths.get("data.txt");
+        Path path = Paths.get("data.rsv");
         try {
             Files.write(path, new String(Files.readAllBytes(path), charset)
                     .replace(oldStr, newStr).getBytes(charset));
